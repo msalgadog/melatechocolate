@@ -95,8 +95,7 @@ include __DIR__ . '/includes/header.php';
         </li>
     </ul>
 
-    <!-- Publicidad -->
-    <div class="ad-slot mb-4">📢 Espacio publicitario</div>
+    <!---->
 
     <!-- ========================
          HEATMAP de todos los números
@@ -279,8 +278,7 @@ include __DIR__ . '/includes/header.php';
     </div>
     <?php endif; ?>
 
-    <!-- Publicidad -->
-    <div class="ad-slot">📢 Espacio publicitario</div>
+    <!---->
 
     <div class="text-center mt-4">
         <a href="predicciones.php" class="btn btn-success btn-lg">

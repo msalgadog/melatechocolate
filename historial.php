@@ -166,8 +166,7 @@ include __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Publicidad -->
-    <div class="ad-slot mb-4">📢 Espacio publicitario</div>
+    <!---->
 
     <!-- Tabla historial -->
     <div class="stat-card">
@@ -227,8 +226,7 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <!-- Publicidad -->
-    <div class="ad-slot mt-4">📢 Espacio publicitario</div>
+    <!---->
 
 </div><!-- /container -->
 

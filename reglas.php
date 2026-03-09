@@ -22,8 +22,7 @@ include __DIR__ . '/includes/header.php';
         de la Lotería Nacional de México.
     </p>
 
-    <!-- Publicidad -->
-    <div class="ad-slot mb-4">📢 Espacio publicitario</div>
+    <!---->
 
     <!-- ---- Tabs ---- -->
     <ul class="nav nav-tabs mb-4" id="reglasTab" role="tablist">
@@ -370,8 +369,7 @@ include __DIR__ . '/includes/header.php';
 
     </div><!-- /tab-content -->
 
-    <!-- Publicidad -->
-    <div class="ad-slot mt-4 mb-4">📢 Espacio publicitario</div>
+    <!---->
 
     <!-- CTA -->
     <div class="text-center">

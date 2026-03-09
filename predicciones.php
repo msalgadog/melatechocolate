@@ -183,8 +183,7 @@ include __DIR__ . '/includes/header.php';
         Herramientas lúdicas para explorar combinaciones. Recuerda: el Melate es puro azar. 🎲
     </p>
 
-    <!-- Publicidad -->
-    <div class="ad-slot mb-4">📢 Espacio publicitario</div>
+    <!---->
 
     <div class="row g-4">
 
@@ -793,8 +792,7 @@ include __DIR__ . '/includes/header.php';
 
     </div><!-- /row -->
 
-    <!-- Publicidad -->
-    <div class="ad-slot mt-4">📢 Espacio publicitario</div>
+    <!---->
 
 </div><!-- /container -->
 

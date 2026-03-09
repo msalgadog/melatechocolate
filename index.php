@@ -12,6 +12,7 @@ require_once __DIR__ . '/includes/helpers.php';
 
 $pagina_actual = 'inicio';
 $page_title    = 'Últimos Resultados';
+$adsense_script = true;
 
 // Datos
 $repo       = new MelateRepository();
@@ -56,11 +57,7 @@ include __DIR__ . '/includes/header.php';
 <!-- ===== CONTENIDO ===== -->
 <div class="container pb-4">
 
-    <!-- Publicidad (slot horizontal) -->
-    <div class="ad-slot text-center mb-4">
-        <!-- Google AdSense: banner 728x90 o responsive -->
-        📢 Espacio publicitario
-    </div>
+    <!---->
 
     <!-- ---- Últimos resultados ---- -->
     <h2 class="mb-3 fw-bold" style="color:var(--ml-verde-oscuro)">
@@ -269,11 +266,7 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <!-- Publicidad 2 -->
-    <div class="ad-slot text-center">
-        <!-- Google AdSense: banner rectangular o leaderboard -->
-        📢 Espacio publicitario
-    </div>
+    <!---->
 
 </div><!-- /container -->
 

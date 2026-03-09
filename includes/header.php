@@ -32,8 +32,10 @@ $titulo = isset($page_title) ? $page_title . ' | ' . APP_NAME : APP_NAME . ' —
     <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= APP_URL ?>/public/css/style.css">
 
-    <!-- Google AdSense (reemplaza con tu ID) -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script> -->
+    <?php if (!empty($adsense_script)): ?>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4972818705870113"
+         crossorigin="anonymous"></script>
+    <?php endif; ?>
 </head>
 <body>
 
