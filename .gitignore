@@ -1,0 +1,39 @@
+# ============================================================
+#  Melate el Chocolate — .gitignore
+# ============================================================
+
+# ── Credenciales reales (NUNCA subir) ──────────────────────
+config/database.php
+
+# ── Uploads temporales del admin ───────────────────────────
+admin/uploads/
+admin/tmp/
+
+# ── Dependencias ───────────────────────────────────────────
+vendor/
+node_modules/
+
+# ── Archivos de entorno ────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Logs y caché ───────────────────────────────────────────
+*.log
+*.cache
+/tmp/
+
+# ── IDEs / editores ────────────────────────────────────────
+.vscode/
+.idea/
+*.suo
+*.user
+*.sublime-workspace
+
+# ── OS ─────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ── Datos sensibles ────────────────────────────────────────
+sources/*.csv

@@ -1,0 +1,326 @@
+/* ============================================================
+   Mellatron - Estilos principales
+   Paleta verde (suerte) + Bootstrap 5
+   ============================================================ */
+
+:root {
+    --ml-verde:        #1a7f3c;
+    --ml-verde-oscuro: #145f2d;
+    --ml-verde-claro:  #27ae60;
+    --ml-verde-light:  #d4edda;
+    --ml-dorado:       #f0c040;
+    --ml-dorado-dark:  #c9a100;
+    --ml-blanco:       #ffffff;
+    --ml-gris-bg:      #f4f7f4;
+    --ml-texto:        #212529;
+    --ml-rojo:         #dc3545;
+    --ml-naranja:      #fd7e14;
+    --ml-azul:         #0d6efd;
+    --ml-shadow:       0 4px 18px rgba(26,127,60,.18);
+    --ml-radius:       12px;
+}
+
+/* ---- Body ---- */
+body {
+    background-color: var(--ml-gris-bg);
+    color: var(--ml-texto);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+}
+
+/* ---- Navbar ---- */
+.navbar-mellatron {
+    background: linear-gradient(135deg, var(--ml-verde-oscuro) 0%, var(--ml-verde) 100%);
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    padding: .6rem 1rem;
+}
+.navbar-mellatron .navbar-brand {
+    color: var(--ml-dorado) !important;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: .04em;
+    text-decoration: none;
+}
+.navbar-mellatron .nav-link {
+    color: rgba(255,255,255,.88) !important;
+    font-weight: 500;
+    transition: color .2s;
+}
+.navbar-mellatron .nav-link:hover,
+.navbar-mellatron .nav-link.active {
+    color: var(--ml-dorado) !important;
+}
+.navbar-mellatron .navbar-toggler {
+    border-color: rgba(255,255,255,.35);
+}
+.navbar-mellatron .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ---- Hero Banner ---- */
+.hero-banner {
+    background: linear-gradient(135deg, var(--ml-verde-oscuro) 0%, var(--ml-verde-claro) 100%);
+    color: #fff;
+    padding: 2.5rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 0 0 var(--ml-radius) var(--ml-radius);
+}
+.hero-banner h1 { font-weight: 800; }
+.hero-banner .bolsa-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--ml-dorado);
+    text-shadow: 1px 1px 4px rgba(0,0,0,.3);
+}
+
+/* ---- Tarjetas (game cards) ---- */
+.card-mellatron {
+    border: none;
+    border-radius: var(--ml-radius);
+    box-shadow: var(--ml-shadow);
+    transition: transform .2s, box-shadow .2s;
+    background: #fff;
+}
+.card-mellatron:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(26,127,60,.22);
+}
+.card-mellatron .card-header {
+    border-radius: var(--ml-radius) var(--ml-radius) 0 0 !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: .75rem 1.25rem;
+}
+.header-melate    { background: linear-gradient(90deg, #145f2d, #27ae60); color: #fff; }
+.header-revancha  { background: linear-gradient(90deg, #0d3d6b, #1976d2); color: #fff; }
+.header-revanchita{ background: linear-gradient(90deg, #7b1fa2, #ab47bc); color: #fff; }
+
+/* ---- Bolas de números ---- */
+.bola-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    justify-content: center;
+    padding: .8rem 0;
+}
+.bola {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: .95rem;
+    line-height: 1;
+    flex-shrink: 0;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.15);
+    cursor: default;
+    user-select: none;
+    transition: transform .15s;
+}
+.bola:hover { transform: scale(1.12); }
+
+/* Colores de bola por tipo */
+.bola-melate     { background: linear-gradient(145deg, #4caf50, #1a7f3c); color: #fff; }
+.bola-revancha   { background: linear-gradient(145deg, #42a5f5, #0d47a1); color: #fff; }
+.bola-revanchita { background: linear-gradient(145deg, #ce93d8, #7b1fa2); color: #fff; }
+.bola-adicional  { background: linear-gradient(145deg, #f0c040, #c9a100); color: #212529; }
+
+/* Bolas para estadísticas (caliente/frio/normal) */
+.bola-caliente   { background: linear-gradient(145deg, #ff7043, #e53935); color: #fff; }
+.bola-frio       { background: linear-gradient(145deg, #4dd0e1, #0277bd); color: #fff; }
+.bola-normal     { background: linear-gradient(145deg, #bdbdbd, #757575); color: #fff; }
+.bola-sugerida   { background: linear-gradient(145deg, #ffd54f, #f9a825); color: #212529; }
+.bola-zodiacal   { background: linear-gradient(145deg, #9c27b0, #6a0080); color: #fff; }
+.bola-sm {
+    width: 36px;
+    height: 36px;
+    font-size: .82rem;
+}
+.bola-lg {
+    width: 58px;
+    height: 58px;
+    font-size: 1.2rem;
+}
+
+/* ---- Separador adicional ---- */
+.sep-adicional {
+    color: var(--ml-dorado-dark);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 .2rem;
+    align-self: center;
+}
+
+/* ---- Badges ---- */
+.badge-concurso {
+    background: var(--ml-verde-claro);
+    color: #fff;
+    font-size: .78rem;
+    border-radius: 6px;
+    padding: .2rem .55rem;
+}
+.badge-bolsa {
+    background: var(--ml-dorado);
+    color: #212529;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: .25rem .65rem;
+}
+
+/* ---- Estadísticas ---- */
+.freq-bar-container { display: flex; align-items: center; gap: .5rem; margin-bottom: .3rem; }
+.freq-num   { width: 32px; font-weight: 700; text-align: right; font-size: .88rem; }
+.freq-bar   {
+    height: 16px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--ml-verde-claro), var(--ml-verde-oscuro));
+    transition: width .5s ease;
+    min-width: 4px;
+}
+.freq-count { font-size: .8rem; color: #666; }
+
+.stat-card {
+    background: #fff;
+    border-radius: var(--ml-radius);
+    box-shadow: var(--ml-shadow);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+.stat-card h5 {
+    font-weight: 700;
+    color: var(--ml-verde-oscuro);
+    border-bottom: 2px solid var(--ml-verde-claro);
+    padding-bottom: .4rem;
+    margin-bottom: 1rem;
+}
+
+/* ---- Tabla historial ---- */
+.tabla-historial th { background: var(--ml-verde); color: #fff; }
+.tabla-historial td { vertical-align: middle; }
+.tabla-historial .bola { width: 30px; height: 30px; font-size: .78rem; }
+
+/* Fila de sorteo con Primer Premio */
+.fila-ganador td {
+    background-color: rgba(240, 192, 64, .18) !important;
+    border-top: 2px solid var(--ml-dorado) !important;
+    border-bottom: 2px solid var(--ml-dorado) !important;
+}
+.fila-ganador td:first-child { border-left: 4px solid var(--ml-dorado) !important; }
+
+/* ---- Predicciones / Zodiac ---- */
+.zodiac-card {
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    border: 2px solid transparent;
+}
+.zodiac-card:hover, .zodiac-card.selected {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    border-color: var(--ml-verde-claro);
+}
+.zodiac-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+/* ---- Sección de herramientas ---- */
+.tool-card {
+    border-radius: var(--ml-radius);
+    box-shadow: var(--ml-shadow);
+    background: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.tool-card h5 { color: var(--ml-verde-oscuro); font-weight: 700; }
+
+/* ---- Pills de naves ---- */
+.nav-pills-verde .nav-link {
+    color: var(--ml-verde);
+    border: 1.5px solid var(--ml-verde);
+    border-radius: 8px;
+    margin-right: .35rem;
+    font-weight: 600;
+}
+.nav-pills-verde .nav-link.active,
+.nav-pills-verde .nav-link:hover {
+    background: var(--ml-verde);
+    color: #fff;
+}
+
+/* ---- Footer ---- */
+footer {
+    background: linear-gradient(135deg, var(--ml-verde-oscuro), #0a3d1a);
+    color: rgba(255,255,255,.8);
+    padding: 2rem 0 1rem;
+    margin-top: 3rem;
+}
+footer a { color: var(--ml-dorado); text-decoration: none; }
+footer a:hover { color: #fff; }
+footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
+
+/* ---- Animaciones ---- */
+@keyframes rollIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+.bola-animate { animation: rollIn .35s ease both; }
+
+/* ---- Responsive ---- */
+@media (max-width: 576px) {
+    .bola        { width: 38px; height: 38px; font-size: .85rem; }
+    .bola-lg     { width: 46px; height: 46px; font-size: 1rem; }
+    .hero-banner { padding: 1.5rem 1rem; }
+    .hero-banner .bolsa-value { font-size: 1.6rem; }
+}
+
+/* ---- Gráfica de calor (heatmap) ---- */
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    padding: .5rem;
+}
+@media (max-width: 576px) {
+    .heatmap-grid { grid-template-columns: repeat(7, 1fr); }
+}
+.heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: default;
+    transition: transform .15s;
+    box-shadow: 0 2px 5px rgba(0,0,0,.12);
+}
+.heatmap-cell:hover { transform: scale(1.18); }
+
+/* Calor visual desde frío (azul) → caliente (rojo) via verde */
+.heat-0  { background:#e3f2fd; color:#1565c0; }
+.heat-1  { background:#b3e5fc; color:#01579b; }
+.heat-2  { background:#80cbc4; color:#004d40; }
+.heat-3  { background:#a5d6a7; color:#1b5e20; }
+.heat-4  { background:#c8e6c9; color:#2e7d32; }
+.heat-5  { background:#69f0ae; color:#00600f; }
+.heat-6  { background:#ffd54f; color:#5d4037; }
+.heat-7  { background:#ffb74d; color:#4e342e; }
+.heat-8  { background:#ff8a65; color:#bf360c; }
+.heat-9  { background:#ef5350; color:#fff; }
+
+/* ---- Google Adsense placeholder ---- */
+.ad-slot {
+    background: #e8f5e9;
+    border: 1px dashed #81c784;
+    border-radius: 8px;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #81c784;
+    font-size: .8rem;
+    margin: 1rem 0;
+}

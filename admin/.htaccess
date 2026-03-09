@@ -1,0 +1,5 @@
+# Mellatron Admin — Seguridad
+# Bloquea acceso directo a los archivos de layout y guard
+<FilesMatch "^(auth|layout_top|layout_bottom)\.php$">
+    Require all denied
+</FilesMatch>
