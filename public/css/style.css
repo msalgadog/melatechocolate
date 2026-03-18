@@ -70,7 +70,7 @@ body {
 
 /* ---- Hero Banner ---- */
 .hero-banner {
-    background: linear-gradient(135deg, rgba(61, 40, 23, 0.18), rgba(107, 68, 35, 0.18)), url('http://mellatron.local/public/img/background.jpg');
+    background: linear-gradient(135deg, rgba(61, 40, 23, 0.18), rgba(107, 68, 35, 0.18)), url('../img/background.jpg');
     background-size: cover;
     background-position: center 58%;
     background-repeat: no-repeat;
