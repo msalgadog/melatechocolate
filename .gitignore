@@ -35,5 +35,5 @@ Thumbs.db
 .DS_Store
 desktop.ini
 
-# ── Datos sensibles ────────────────────────────────────────
-sources/*.csv
+# ── Datos y archivos fuente ────────────────────────────────
+sources/
