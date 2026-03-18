@@ -125,7 +125,7 @@
 <nav class="adm-navbar navbar navbar-expand-lg">
     <div class="container-fluid container-xl">
         <a class="navbar-brand" href="<?= APP_URL ?>/admin/index.php">
-            <i class="bi bi-shield-fill-check me-1"></i> MEC Admin
+            <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo.png" alt="MEC Admin" style="height: 40px;">
         </a>
 
         <button class="navbar-toggler" type="button"

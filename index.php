@@ -37,7 +37,7 @@ include __DIR__ . '/includes/header.php';
         <div class="row align-items-center">
             <div class="col-md-7">
                 <h1 class="mb-1">
-                    <i class="bi bi-award-fill"></i> Melate el Chocolate
+                    <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo.png" alt="Melate el Chocolate" style="height: 120px;">
                 </h1>
                 <p class="mb-0 fs-5">Estadísticas, predicciones y resultados del Melate Mexicano</p>
             </div>

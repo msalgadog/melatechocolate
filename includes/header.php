@@ -44,7 +44,7 @@ $titulo = isset($page_title) ? $page_title . ' | ' . APP_NAME : APP_NAME . ' —
     <div class="container-fluid container-xl">
 
         <a class="navbar-brand" href="<?= APP_URL ?>/index.php">
-            <i class="bi bi-award-fill"></i> Melate el Chocolate
+            Melate el Chocolate
         </a>
 
         <button class="navbar-toggler" type="button"

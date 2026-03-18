@@ -1,28 +1,38 @@
 /* ============================================================
-   Mellatron - Estilos principales
-   Paleta verde (suerte) + Bootstrap 5
+   Melate el Chocolate - Estilos principales
+   Paleta Chocolate, Crema y Dorado + Bootstrap 5
    ============================================================ */
 
 :root {
-    --ml-verde:        #1a7f3c;
-    --ml-verde-oscuro: #145f2d;
-    --ml-verde-claro:  #27ae60;
-    --ml-verde-light:  #d4edda;
-    --ml-dorado:       #f0c040;
-    --ml-dorado-dark:  #c9a100;
-    --ml-blanco:       #ffffff;
-    --ml-gris-bg:      #f4f7f4;
-    --ml-texto:        #212529;
-    --ml-rojo:         #dc3545;
-    --ml-naranja:      #fd7e14;
-    --ml-azul:         #0d6efd;
-    --ml-shadow:       0 4px 18px rgba(26,127,60,.18);
-    --ml-radius:       12px;
+    /* Paleta Chocolate */
+    --ml-cafe-muy-oscuro: #1F1105;
+    --ml-cafe-oscuro:     #3D2817;
+    --ml-cafe-medio:      #6B4423;
+    --ml-cafe-claro:      #A6714D;
+    --ml-crema:           #F5F1E8;
+    
+    /* Acentos (mantienen conceptos previos) */
+    --ml-dorado:          #f0c040;
+    --ml-dorado-dark:     #c9a100;
+    --ml-blanco:          #ffffff;
+    
+    /* Colores para compatibilidad (renombrados) */
+    --ml-verde:           --ml-cafe-oscuro;
+    --ml-verde-oscuro:    --ml-cafe-muy-oscuro;
+    --ml-verde-claro:     --ml-cafe-medio;
+    --ml-verde-light:     #f5f0e8;
+    
+    --ml-texto:           #2a2a2a;
+    --ml-rojo:            #dc3545;
+    --ml-naranja:         #fd7e14;
+    --ml-azul:            #0d6efd;
+    --ml-shadow:          0 4px 18px rgba(31,17,5,.22);
+    --ml-radius:          12px;
 }
 
 /* ---- Body ---- */
 body {
-    background-color: var(--ml-gris-bg);
+    background-color: var(--ml-crema);
     color: var(--ml-texto);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
@@ -30,8 +40,8 @@ body {
 
 /* ---- Navbar ---- */
 .navbar-mellatron {
-    background: linear-gradient(135deg, var(--ml-verde-oscuro) 0%, var(--ml-verde) 100%);
-    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+    background: var(--ml-cafe-muy-oscuro);
+    box-shadow: 0 2px 12px rgba(0,0,0,.4);
     padding: .6rem 1rem;
 }
 .navbar-mellatron .navbar-brand {
@@ -40,6 +50,7 @@ body {
     font-size: 1.5rem;
     letter-spacing: .04em;
     text-decoration: none;
+    filter: drop-shadow(0 2px 6px rgba(255,255,255,.3));
 }
 .navbar-mellatron .nav-link {
     color: rgba(255,255,255,.88) !important;
@@ -59,12 +70,18 @@ body {
 
 /* ---- Hero Banner ---- */
 .hero-banner {
-    background: linear-gradient(135deg, var(--ml-verde-oscuro) 0%, var(--ml-verde-claro) 100%);
+    background: linear-gradient(135deg, rgba(61, 40, 23, 0.18), rgba(107, 68, 35, 0.18)), url('http://mellatron.local/public/img/background.jpg');
+    background-size: cover;
+    background-position: center 58%;
+    background-repeat: no-repeat;
     color: #fff;
-    padding: 2.5rem 1.5rem;
+    min-height: 420px;
     margin-bottom: 2rem;
     border-radius: 0 0 var(--ml-radius) var(--ml-radius);
+    display: flex;
+    align-items: center;
 }
+.hero-banner .container { padding: 2rem 0; }
 .hero-banner h1 { font-weight: 800; }
 .hero-banner .bolsa-value {
     font-size: 2.2rem;
@@ -91,9 +108,9 @@ body {
     font-size: 1.05rem;
     padding: .75rem 1.25rem;
 }
-.header-melate    { background: linear-gradient(90deg, #145f2d, #27ae60); color: #fff; }
-.header-revancha  { background: linear-gradient(90deg, #0d3d6b, #1976d2); color: #fff; }
-.header-revanchita{ background: linear-gradient(90deg, #7b1fa2, #ab47bc); color: #fff; }
+.header-melate    { background: linear-gradient(90deg, var(--ml-cafe-oscuro), var(--ml-cafe-medio)); color: #fff; }
+.header-revancha  { background: linear-gradient(90deg, #2c5282, #2c7a8f); color: #fff; }
+.header-revanchita{ background: linear-gradient(90deg, #5a3d6e, #7a5c8f); color: #fff; }
 
 /* ---- Bolas de números ---- */
 .bola-container {
@@ -122,17 +139,38 @@ body {
 .bola:hover { transform: scale(1.12); }
 
 /* Colores de bola por tipo */
-.bola-melate     { background: linear-gradient(145deg, #4caf50, #1a7f3c); color: #fff; }
-.bola-revancha   { background: linear-gradient(145deg, #42a5f5, #0d47a1); color: #fff; }
-.bola-revanchita { background: linear-gradient(145deg, #ce93d8, #7b1fa2); color: #fff; }
-.bola-adicional  { background: linear-gradient(145deg, #f0c040, #c9a100); color: #212529; }
+.bola-melate {
+    background: radial-gradient(circle at 30% 30%, #7d4e2d 0%, #4a2c16 70%, #2b1608 100%);
+    color: #fff;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.3), inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+.bola-revancha   { background: linear-gradient(145deg, #3d5a80, #1e3a5f); color: #fff; }
+.bola-revanchita { background: linear-gradient(145deg, #6b4d7a, #4a2f5f); color: #fff; }
+.bola-adicional {
+    background: radial-gradient(circle at 30% 30%, #ffd700 0%, #d4af37 60%, #b8860b 100%);
+    color: #212529;
+    box-shadow: 2px 4px 10px rgba(212, 175, 55, 0.3), inset -1px -1px 3px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
 /* Bolas para estadísticas (caliente/frio/normal) */
-.bola-caliente   { background: linear-gradient(145deg, #ff7043, #e53935); color: #fff; }
-.bola-frio       { background: linear-gradient(145deg, #4dd0e1, #0277bd); color: #fff; }
-.bola-normal     { background: linear-gradient(145deg, #bdbdbd, #757575); color: #fff; }
-.bola-sugerida   { background: linear-gradient(145deg, #ffd54f, #f9a825); color: #212529; }
-.bola-zodiacal   { background: linear-gradient(145deg, #9c27b0, #6a0080); color: #fff; }
+.bola-caliente   { background: linear-gradient(145deg, #c86432, #8b4513); color: #fff; }
+.bola-frio       { background: linear-gradient(145deg, #4d7a8f, #2c5282); color: #fff; }
+.bola-normal     { background: linear-gradient(145deg, #8B7355, #5D4E37); color: #fff; }
+.bola-sugerida   { background: linear-gradient(145deg, #f0c040, #d4a70e); color: #212529; }
+.bola-zodiacal   { background: linear-gradient(145deg, #8b5a8f, #5d3d6b); color: #fff; }
+
+/* Logo con efecto chocolate 3D */
+.logo-chocolate {
+    filter: drop-shadow(0 0 8px rgba(255, 245, 225, 0.4));
+    transition: transform 0.3s ease;
+}
+.logo-chocolate:hover {
+    transform: scale(1.05);
+}
+
 .bola-sm {
     width: 36px;
     height: 36px;
@@ -175,7 +213,7 @@ body {
 .freq-bar   {
     height: 16px;
     border-radius: 4px;
-    background: linear-gradient(90deg, var(--ml-verde-claro), var(--ml-verde-oscuro));
+    background: linear-gradient(90deg, var(--ml-cafe-medio), var(--ml-cafe-oscuro));
     transition: width .5s ease;
     min-width: 4px;
 }
@@ -184,20 +222,20 @@ body {
 .stat-card {
     background: #fff;
     border-radius: var(--ml-radius);
-    box-shadow: var(--ml-shadow);
+    box-shadow: 0 4px 18px rgba(31,17,5,.18);
     padding: 1.25rem;
     margin-bottom: 1.25rem;
 }
 .stat-card h5 {
     font-weight: 700;
-    color: var(--ml-verde-oscuro);
-    border-bottom: 2px solid var(--ml-verde-claro);
+    color: var(--ml-cafe-oscuro);
+    border-bottom: 2px solid var(--ml-cafe-medio);
     padding-bottom: .4rem;
     margin-bottom: 1rem;
 }
 
 /* ---- Tabla historial ---- */
-.tabla-historial th { background: var(--ml-verde); color: #fff; }
+.tabla-historial th { background: var(--ml-cafe-oscuro); color: #fff; }
 .tabla-historial td { vertical-align: middle; }
 .tabla-historial .bola { width: 30px; height: 30px; font-size: .78rem; }
 
@@ -237,21 +275,21 @@ body {
 
 /* ---- Pills de naves ---- */
 .nav-pills-verde .nav-link {
-    color: var(--ml-verde);
-    border: 1.5px solid var(--ml-verde);
+    color: var(--ml-cafe-oscuro);
+    border: 1.5px solid var(--ml-cafe-oscuro);
     border-radius: 8px;
     margin-right: .35rem;
     font-weight: 600;
 }
 .nav-pills-verde .nav-link.active,
 .nav-pills-verde .nav-link:hover {
-    background: var(--ml-verde);
+    background: var(--ml-cafe-oscuro);
     color: #fff;
 }
 
 /* ---- Footer ---- */
 footer {
-    background: linear-gradient(135deg, var(--ml-verde-oscuro), #0a3d1a);
+    background: linear-gradient(135deg, var(--ml-cafe-muy-oscuro), var(--ml-cafe-oscuro));
     color: rgba(255,255,255,.8);
     padding: 2rem 0 1rem;
     margin-top: 3rem;
@@ -271,8 +309,23 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
 @media (max-width: 576px) {
     .bola        { width: 38px; height: 38px; font-size: .85rem; }
     .bola-lg     { width: 46px; height: 46px; font-size: 1rem; }
-    .hero-banner { padding: 1.5rem 1rem; }
+    .hero-banner { min-height: 300px; background-position: center 52%; }
+    .hero-banner .container { padding: 1.5rem 0; }
     .hero-banner .bolsa-value { font-size: 1.6rem; }
+}
+
+@media (min-width: 1400px) {
+    .hero-banner {
+        min-height: 520px;
+        background-position: center 60%;
+    }
+}
+
+@media (min-width: 1800px) {
+    .hero-banner {
+        min-height: 600px;
+        background-position: center 62%;
+    }
 }
 
 /* ---- Gráfica de calor (heatmap) ---- */
@@ -299,28 +352,28 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
 }
 .heatmap-cell:hover { transform: scale(1.18); }
 
-/* Calor visual desde frío (azul) → caliente (rojo) via verde */
-.heat-0  { background:#e3f2fd; color:#1565c0; }
-.heat-1  { background:#b3e5fc; color:#01579b; }
-.heat-2  { background:#80cbc4; color:#004d40; }
-.heat-3  { background:#a5d6a7; color:#1b5e20; }
-.heat-4  { background:#c8e6c9; color:#2e7d32; }
-.heat-5  { background:#69f0ae; color:#00600f; }
-.heat-6  { background:#ffd54f; color:#5d4037; }
-.heat-7  { background:#ffb74d; color:#4e342e; }
-.heat-8  { background:#ff8a65; color:#bf360c; }
-.heat-9  { background:#ef5350; color:#fff; }
+/* Calor visual desde frío (azul mate) → caliente (café/rojo) via crema/dorado */
+.heat-0  { background:#e8dcc8; color:#5d4e37; }
+.heat-1  { background:#e0cdb5; color:#5d4e37; }
+.heat-2  { background:#d8bfa3; color:#4a3c28; }
+.heat-3  { background:#d0b191; color:#4a3c28; }
+.heat-4  { background:#c8a37f; color:#fff; }
+.heat-5  { background:#f0c040; color:#5d4e37; }
+.heat-6  { background:#e8b040; color:#fff; }
+.heat-7  { background:#d9963d; color:#fff; }
+.heat-8  { background:#c17c34; color:#fff; }
+.heat-9  { background:#a85c2c; color:#fff; }
 
 /* ---- Google Adsense placeholder ---- */
 .ad-slot {
-    background: #e8f5e9;
-    border: 1px dashed #81c784;
+    background: #faf7f2;
+    border: 1px dashed #d0b191;
     border-radius: 8px;
     min-height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #81c784;
+    color: #a08070;
     font-size: .8rem;
     margin: 1rem 0;
 }
