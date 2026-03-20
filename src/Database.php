@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Mellatron - Clase de conexión a base de datos (Singleton)
  */

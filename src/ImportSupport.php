@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 function mellatronEnsureImportInfrastructure(PDO $db): void
 {
@@ -133,16 +134,12 @@ function mellatronDetectarJuego(array $header, array $firstRow): string
     $npIdx = array_search('NPRODUCTO', array_map('strtoupper', array_map('trim', $header)), true);
     if ($npIdx !== false && isset($firstRow[$npIdx])) {
         $code = (int)$firstRow[$npIdx];
-        if ($code === 40) {
-            return 'melate';
-        }
-        if ($code === 41) {
-            return 'revancha';
-        }
-        if ($code === 34) {
-            return 'revanchita';
-        }
-        return '';
+        return match($code) {
+            40 => 'melate',
+            41 => 'revancha',
+            34 => 'revanchita',
+            default => '',
+        };
     }
 
     $cols = count($header);
@@ -218,22 +215,20 @@ function mellatronParsearFila(array $row, string $juego): array
 
 function mellatronInsertarFila(PDO $db, array $data, string $juego): string
 {
-    if ($juego === 'melate') {
-        $sql = "INSERT IGNORE INTO sorteos_melate
+    $sql = match($juego) {
+        'melate' => "INSERT IGNORE INTO sorteos_melate
                     (concurso,r1,r2,r3,r4,r5,r6,r7,bolsa,fecha)
                 VALUES
-                    (:concurso,:r1,:r2,:r3,:r4,:r5,:r6,:r7,:bolsa,:fecha)";
-    } elseif ($juego === 'revancha') {
-        $sql = "INSERT IGNORE INTO sorteos_revancha
+                    (:concurso,:r1,:r2,:r3,:r4,:r5,:r6,:r7,:bolsa,:fecha)",
+        'revancha' => "INSERT IGNORE INTO sorteos_revancha
                     (concurso,r1,r2,r3,r4,r5,r6,bolsa,fecha)
                 VALUES
-                    (:concurso,:r1,:r2,:r3,:r4,:r5,:r6,:bolsa,:fecha)";
-    } else {
-        $sql = "INSERT IGNORE INTO sorteos_revanchita
+                    (:concurso,:r1,:r2,:r3,:r4,:r5,:r6,:bolsa,:fecha)",
+        default => "INSERT IGNORE INTO sorteos_revanchita
                     (concurso,f1,f2,f3,f4,f5,f6,bolsa,fecha)
                 VALUES
-                    (:concurso,:f1,:f2,:f3,:f4,:f5,:f6,:bolsa,:fecha)";
-    }
+                    (:concurso,:f1,:f2,:f3,:f4,:f5,:f6,:bolsa,:fecha)",
+    };
 
     try {
         $stmt = $db->prepare($sql);
@@ -302,7 +297,7 @@ function mellatronDownloadRemoteCsv(string $url): array
                 $httpCode = (int)$m[1];
             }
             foreach ($http_response_header as $h) {
-                if (stripos($h, 'Content-Type:') === 0) {
+                if (str_starts_with(strtolower($h), 'content-type:')) {
                     $contentType = trim(substr($h, 13));
                     break;
                 }
@@ -359,9 +354,7 @@ function mellatronParseCsvFile(string $filePath, string $forcedJuego = ''): arra
 
     $allRows = [];
     while (($row = fgetcsv($handle)) !== false) {
-        if (count(array_filter($row, function ($v) {
-            return trim((string)$v) !== '';
-        })) === 0) {
+        if (count(array_filter($row, fn($v) => trim((string)$v) !== '')) === 0) {
             continue;
         }
         $allRows[] = $row;

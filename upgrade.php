@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * upgrade.php — Script de migración/actualización de base de datos
  *
@@ -162,8 +163,7 @@ $indexChecks = [
     ['sorteos_revanchita',  'idx_fecha',    'fecha'],
 ];
 
-foreach ($indexChecks as $idxEntry) {
-    list($table, $idxName, $col) = $idxEntry;
+foreach ($indexChecks as [$table, $idxName, $col]) {
     if (!tableExists($pdo, $table)) {
         out("Tabla {$table} no existe, saltando índice.", 'skip');
         continue;

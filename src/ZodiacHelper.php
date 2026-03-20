@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Mellatron - Helper Zodiacal y Numerología de la Suerte
  * Puramente lúdico – ¡juega con responsabilidad!

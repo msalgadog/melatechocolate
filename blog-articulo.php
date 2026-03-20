@@ -41,7 +41,7 @@ include __DIR__ . '/includes/header.php';
                 if ($p === '') continue;
                 if (preg_match('/^##\s+(.+)/s', $p, $m)):
                     echo '<h2 class="blog-h2">' . htmlspecialchars(trim($m[1])) . '</h2>';
-                elseif (strlen($p) > 3 && substr($p, 0, 2) === '$$' && substr($p, -2) === '$$'):
+                elseif (str_starts_with($p, '$$') && str_ends_with($p, '$$') && strlen($p) > 4):
                     echo '<div class="blog-math">' . htmlspecialchars($p) . '</div>';
                 else:
                     echo '<p>' . nl2br(htmlspecialchars($p)) . '</p>';

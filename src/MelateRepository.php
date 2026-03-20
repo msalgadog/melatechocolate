@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Mellatron - Repositorio de sorteos
  * Consultas para Melate, Revancha y Revanchita
