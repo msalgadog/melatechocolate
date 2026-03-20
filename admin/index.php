@@ -5,8 +5,41 @@
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../src/Database.php';
+require_once __DIR__ . '/../src/ImportSupport.php';
 
 $db = Database::getConnection();
+mellatronEnsureImportInfrastructure($db);
+
+$dashboardFlash = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'import_all_now') {
+    $urls = mellatronGetSourceUrls($db);
+    $labels = ['melate' => 'Melate', 'revancha' => 'Revancha', 'revanchita' => 'Revanchita'];
+    $messages = [];
+    $hasError = false;
+
+    foreach (['melate', 'revancha', 'revanchita'] as $game) {
+        $result = mellatronImportFromRemote($db, $game, $urls[$game] ?? '', 'admin_dashboard');
+        $messages[] = $labels[$game] . ': ' . $result['message'];
+        if (!$result['ok']) {
+            $hasError = true;
+        }
+    }
+
+    $_SESSION['dashboard_flash'] = [
+        'type' => $hasError ? 'warning' : 'success',
+        'msg' => implode(' ', $messages),
+    ];
+
+    $selfUrl = (APP_URL ?: '') . '/admin/index.php';
+    header('Location: ' . $selfUrl);
+    exit;
+}
+
+if (!empty($_SESSION['dashboard_flash']) && is_array($_SESSION['dashboard_flash'])) {
+    $dashboardFlash = $_SESSION['dashboard_flash'];
+    unset($_SESSION['dashboard_flash']);
+}
 
 // ---- Stats generales ----
 $stats = [];
@@ -59,6 +92,16 @@ require __DIR__ . '/layout_top.php';
         <small class="text-muted">Resumen de sorteos — <?= date('d/m/Y') ?></small>
     </div>
     <div class="d-flex gap-2">
+        <form method="POST" class="m-0">
+            <input type="hidden" name="action" value="import_all_now">
+            <button type="submit" class="btn btn-admin-primary btn-sm">
+                <i class="bi bi-cloud-download me-1"></i> Importar todo ahora
+            </button>
+        </form>
+        <a href="<?= APP_URL ?>/admin/fuentes.php"
+           class="btn btn-admin-outline btn-sm">
+            <i class="bi bi-link-45deg me-1"></i> Fuentes & Cron
+        </a>
         <a href="<?= APP_URL ?>/admin/nuevo-sorteo.php"
            class="btn btn-admin-primary btn-sm">
             <i class="bi bi-plus-lg me-1"></i> Nuevo sorteo
@@ -69,6 +112,13 @@ require __DIR__ . '/layout_top.php';
         </a>
     </div>
 </div>
+
+<?php if ($dashboardFlash): ?>
+<div class="alert <?= $dashboardFlash['type'] === 'success' ? 'flash-success' : 'alert-warning' ?> mb-4">
+    <i class="bi bi-<?= $dashboardFlash['type'] === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill' ?> me-1"></i>
+    <?= htmlspecialchars($dashboardFlash['msg']) ?>
+</div>
+<?php endif; ?>
 
 <!-- ===== TARJETAS DE ESTADÍSTICAS ===== -->
 <div class="row g-3 mb-4">

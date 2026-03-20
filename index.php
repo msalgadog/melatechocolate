@@ -8,10 +8,11 @@ require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/src/Database.php';
 require_once __DIR__ . '/src/MelateRepository.php';
 require_once __DIR__ . '/src/StatsCalculator.php';
+require_once __DIR__ . '/src/ContentRepository.php';
 require_once __DIR__ . '/includes/helpers.php';
 
-$pagina_actual = 'inicio';
-$page_title    = 'Últimos Resultados';
+$pagina_actual  = 'inicio';
+$page_title     = 'Últimos Resultados';
 $adsense_script = true;
 
 // Datos
@@ -25,8 +26,10 @@ $freqMelate     = $repo->frecuenciaMelate();
 $freqRevancha   = $repo->frecuenciaRevancha();
 $freqRevanchita = $repo->frecuenciaRevanchita();
 
-// Últimos 10 sorteos para mini-tendencia
-$ultimos10 = $repo->historialMelate(1, 10);
+// Blog
+$contentRepo = new ContentRepository();
+$contentRepo->ensureSeedPosts();
+$blogPosts = $contentRepo->latestPosts(5);
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -164,36 +167,54 @@ include __DIR__ . '/includes/header.php';
 
     </div><!-- /row resultados -->
 
-    <!-- ---- Mini tabla de últimos 10 Melate ---- -->
-    <div class="stat-card mb-4">
-        <h5><i class="bi bi-clock-history me-1"></i> Últimos 10 sorteos Melate</h5>
-        <div class="table-responsive">
-            <table class="table tabla-historial table-hover table-sm align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th>Concurso</th>
-                        <th colspan="6" class="text-center">Números</th>
-                        <th class="text-center">Adicional</th>
-                        <th>Bolsa</th>
-                        <th>Fecha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($ultimos10 as $row): ?>
-                        <?= renderFilaHistorial($row, 'melate') ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="d-flex align-items-center gap-2 mt-2 mb-1 small text-muted">
-            <span style="display:inline-block;width:14px;height:14px;background:rgba(240,192,64,.35);border-left:3px solid #f0c040;border-radius:2px;flex-shrink:0"></span>
-            Sorteo con <strong>Primer Premio</strong> ganado
-        </div>
-        <div class="text-end mt-1">
-            <a href="historial.php" class="btn btn-sm btn-outline-success">
-                Ver historial completo <i class="bi bi-arrow-right"></i>
+    <!-- ---- Blog de análisis ---- -->
+    <h2 class="mb-3 fw-bold" style="color:var(--ml-verde-oscuro)">
+        <i class="bi bi-journal-richtext"></i> Blog de análisis
+    </h2>
+    <?php
+    $blogColors = ['blog-img-1','blog-img-2','blog-img-3','blog-img-4','blog-img-5'];
+    $blogIcons  = ['bi-journal-richtext','bi-bar-chart-line','bi-trophy','bi-stars','bi-dice-6'];
+    ?>
+    <div class="row g-4 mb-4">
+    <?php foreach ($blogPosts as $bi => $bpost):
+        $bImgClass = $blogColors[$bi % 5];
+        $bIcon     = $blogIcons[$bi % 5];
+    ?>
+    <div class="col-12 col-sm-6 col-lg-4">
+        <article class="blog-card">
+            <a class="blog-card-thumb <?= $bImgClass ?>"
+               href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+                <?php if (!empty($bpost['image_url'])): ?>
+                    <img src="<?= htmlspecialchars($bpost['image_url']) ?>"
+                         alt="<?= htmlspecialchars($bpost['title']) ?>">
+                <?php else: ?>
+                    <i class="bi <?= $bIcon ?> blog-card-icon"></i>
+                <?php endif; ?>
             </a>
-        </div>
+            <div class="blog-card-body">
+                <p class="blog-card-meta">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    <?= !empty($bpost['published_at']) ? date('d M Y', strtotime($bpost['published_at'])) : '' ?>
+                </p>
+                <h2 class="blog-card-title">
+                    <a href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+                        <?= htmlspecialchars($bpost['title']) ?>
+                    </a>
+                </h2>
+                <p class="blog-card-excerpt"><?= htmlspecialchars($bpost['excerpt']) ?></p>
+                <a class="blog-card-readmore"
+                   href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+                    Leer art&iacute;culo completo <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </article>
+    </div>
+    <?php endforeach; ?>
+    </div><!-- /row blog -->
+    <div class="text-end mb-4">
+        <a href="<?= APP_URL ?>/blog.php" class="btn btn-success btn-sm">
+            Ver todos los artículos <i class="bi bi-journal-text ms-1"></i>
+        </a>
     </div>
 
     <!-- ---- Accesos rápidos ---- -->
@@ -234,36 +255,6 @@ include __DIR__ . '/includes/header.php';
             </a>
         </div>
 
-    </div>
-
-    <!-- ---- Datos curiosos ---- -->
-    <?php
-    $totalSorteos = $repo->totalMelate();
-    $distSum      = $repo->distribucionSumaMelate();
-    $retardo      = $repo->retardoMelate();
-    arsort($retardo);
-    $masAtrasado  = array_key_first($retardo);
-    ?>
-
-    <div class="row g-3 mb-4">
-        <div class="col-md-4">
-            <div class="stat-card text-center">
-                <div class="fs-1 fw-bold" style="color:var(--ml-verde-claro)"><?= number_format($totalSorteos) ?></div>
-                <p class="mb-0 text-muted small">Sorteos en el histórico</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="stat-card text-center">
-                <div class="fs-1 fw-bold" style="color:var(--ml-dorado)"><?= $distSum['promedio'] ?></div>
-                <p class="mb-0 text-muted small">Suma promedio de los 6 números</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="stat-card text-center">
-                <div class="bola bola-caliente bola-lg mx-auto"><?= $masAtrasado ?></div>
-                <p class="mb-0 text-muted small mt-2">Número más atrasado (<?= $retardo[$masAtrasado] ?> sorteos sin salir)</p>
-            </div>
-        </div>
     </div>
 
     <!---->

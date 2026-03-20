@@ -17,6 +17,7 @@
                 <p class="footer-title">Navegar</p>
                 <ul class="list-unstyled small mb-0">
                     <li><a href="<?= APP_URL ?>/index.php"><i class="bi bi-house-door"></i> Inicio</a></li>
+                    <li><a href="<?= APP_URL ?>/blog.php"><i class="bi bi-journal-text"></i> Blog</a></li>
                     <li><a href="<?= APP_URL ?>/estadisticas.php"><i class="bi bi-bar-chart"></i> Estadísticas</a></li>
                     <li><a href="<?= APP_URL ?>/predicciones.php"><i class="bi bi-stars"></i> Predicciones</a></li>
                     <li><a href="<?= APP_URL ?>/historial.php"><i class="bi bi-clock-history"></i> Historial</a></li>
@@ -25,13 +26,17 @@
             </div>
 
             <div class="col-md-4">
-                <p class="footer-title">Aviso Legal</p>
+                <p class="footer-title">Legales y confianza</p>
+                <ul class="list-unstyled small mb-2">
+                    <li><a href="<?= APP_URL ?>/sobre-nosotros.php">Sobre nosotros</a></li>
+                    <li><a href="<?= APP_URL ?>/contacto.php">Contacto</a></li>
+                    <li><a href="<?= APP_URL ?>/politica-privacidad.php">Política de privacidad</a></li>
+                    <li><a href="<?= APP_URL ?>/terminos-condiciones.php">Términos y condiciones</a></li>
+                    <li><a href="<?= APP_URL ?>/aviso-legal.php">Aviso legal</a></li>
+                </ul>
                 <p class="small mb-0">
-                    Este sitio <strong>no está afiliado</strong> a la Lotería Nacional para la
-                    Asistencia Pública. Los datos son de carácter público e informativo.
-                    <br><br>
-                    Recuerda que el juego es <strong>puro azar</strong>. Juega con responsabilidad.
-                    Prohibido para menores de edad.
+                    <strong>No hay garantía de ganar.</strong> Este portal es informativo y recreativo,
+                    y <strong>no está afiliado a la Lotería Nacional</strong>.
                 </p>
             </div>
 
@@ -57,6 +62,11 @@
 
 <!-- App JS -->
 <script src="<?= APP_URL ?>/public/js/app.js"></script>
+<?php if (!empty($katex_enabled)): ?>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true}],throwOnError:false});"></script>
+<?php endif; ?>
 <?php if (isset($page_scripts)): ?>
     <?= $page_scripts ?>
 <?php endif; ?>

@@ -148,6 +148,63 @@ La Lotería Nacional publica los resultados en formato CSV en su sitio oficial. 
 
 ---
 
+## Importación remota desde Admin (URLs oficiales)
+
+En el panel admin ahora existe la sección **Fuentes & Cron**:
+
+1. Ve a `/admin/fuentes.php`
+2. Configura las URLs de históricos para:
+  - Melate
+  - Revancha
+  - Revanchita
+3. Guarda URLs.
+4. Usa **Importar todo ahora** o botones por juego.
+
+La importación remota valida:
+- que la respuesta sea CSV y no HTML,
+- que existan columnas esperadas (`NPRODUCTO`, `CONCURSO`),
+- que el `NPRODUCTO` corresponda al juego (40, 41, 34).
+
+Si la URL cambia o deja de entregar CSV, el sistema registra error en el log.
+
+---
+
+## Cron configurable (Plesk / SSH)
+
+Puedes ejecutar el importador remoto por cron con:
+
+```bash
+php cron/import_remote.php
+```
+
+En **Fuentes & Cron** puedes definir:
+- Activar/desactivar cron lógico.
+- Intervalo mínimo en minutos (anti-ejecución excesiva).
+
+Si Plesk lo ejecuta más seguido del intervalo configurado, el script se salta automáticamente.
+
+### Ejemplo en Plesk
+
+- Tipo: **Run a PHP script** o **Comando Bash**
+- Comando sugerido:
+  ```bash
+  php /ruta/absoluta/mellatron/cron/import_remote.php
+  ```
+- Frecuencia: cada 6h o diaria (según tu operación)
+
+---
+
+## Logs de importación y cron
+
+Se guardan en dos lugares:
+
+- Tabla `import_logs` (visible en Admin → Fuentes & Cron)
+- Archivo `logs/import-cron.log`
+
+Esto permite auditar errores de descarga, validación CSV, importación y ejecuciones de cron.
+
+---
+
 ## Integrar Google AdSense
 
 El sitio incluye espacios publicitarios listos para AdSense. Busca los bloques con clase `.ad-slot` en los archivos PHP:
