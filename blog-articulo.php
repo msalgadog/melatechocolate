@@ -36,17 +36,24 @@ include __DIR__ . '/includes/header.php';
             <p class="lead text-muted"><?= htmlspecialchars($post['excerpt']) ?></p>
             <hr>
             <?php
-            foreach (preg_split('/\n\n+/', trim($post['content'])) as $p):
-                $p = trim($p);
-                if ($p === '') continue;
-                if (preg_match('/^##\s+(.+)/s', $p, $m)):
-                    echo '<h2 class="blog-h2">' . htmlspecialchars(trim($m[1])) . '</h2>';
-                elseif (str_starts_with($p, '$$') && str_ends_with($p, '$$') && strlen($p) > 4):
-                    echo '<div class="blog-math">' . htmlspecialchars($p) . '</div>';
-                else:
-                    echo '<p>' . nl2br(htmlspecialchars($p)) . '</p>';
-                endif;
-            endforeach;
+            $rawContent = trim((string)$post['content']);
+            $isHtmlContent = preg_match('/<\s*\/?[a-z][^>]*>/i', $rawContent) === 1;
+
+            if ($isHtmlContent) {
+                echo $rawContent;
+            } else {
+                foreach (preg_split('/\n\n+/', $rawContent) as $p):
+                    $p = trim($p);
+                    if ($p === '') continue;
+                    if (preg_match('/^##\s+(.+)/s', $p, $m)):
+                        echo '<h2 class="blog-h2">' . htmlspecialchars(trim($m[1])) . '</h2>';
+                    elseif (str_starts_with($p, '$$') && str_ends_with($p, '$$') && strlen($p) > 4):
+                        echo '<div class="blog-math">' . htmlspecialchars($p) . '</div>';
+                    else:
+                        echo '<p>' . nl2br(htmlspecialchars($p)) . '</p>';
+                    endif;
+                endforeach;
+            }
             ?>
         </article>
 

@@ -143,34 +143,122 @@ class ContentRepository
 
     public function ensureSeedPosts(): void
     {
-        // Siempre actualiza los 3 artículos canónicos (ON DUPLICATE KEY UPDATE)
-        $stmtUp = $this->db->prepare(
-            "INSERT INTO blog_posts (slug, title, excerpt, image_url, content, status, published_at)
-             VALUES (:slug, :title, :excerpt, :image_url, :content, 'published', NOW())
-             ON DUPLICATE KEY UPDATE
-                 title = VALUES(title),
-                 excerpt = VALUES(excerpt),
-                 image_url = VALUES(image_url),
-                 content = VALUES(content)"
-        );
-        foreach ($this->canonicalPosts() as $post) {
-            $stmtUp->execute($post);
+        $count = (int)$this->db->query("SELECT COUNT(*) FROM blog_posts")->fetchColumn();
+        if ($count > 0) {
+            return;
         }
 
-        // Inserta artículos extra solo si la BD está casi vacía
-        $count = (int)$this->db->query("SELECT COUNT(*) FROM blog_posts")->fetchColumn();
-        if ($count <= 3) {
-            $stmtIg = $this->db->prepare(
-                "INSERT IGNORE INTO blog_posts (slug, title, excerpt, image_url, content, status, published_at)
-                 VALUES (:slug, :title, :excerpt, :image_url, :content, 'published', NOW())"
-            );
-            foreach ($this->extraSeedPosts() as $post) {
-                if (!isset($post['image_url'])) {
-                    $post['image_url'] = '';
-                }
-                $stmtIg->execute($post);
+        $stmt = $this->db->prepare(
+            "INSERT INTO blog_posts (slug, title, excerpt, image_url, content, status, published_at)
+             VALUES (:slug, :title, :excerpt, :image_url, :content, 'published', NOW())"
+        );
+
+        foreach (array_merge($this->canonicalPosts(), $this->extraSeedPosts()) as $post) {
+            if (!isset($post['image_url'])) {
+                $post['image_url'] = '';
             }
+            $stmt->execute($post);
         }
+    }
+
+    private function buildUniqueSlug(string $title, $excludeId = null): string
+    {
+        $base = trim((string)preg_replace('/-+/', '-', (string)preg_replace('/[^a-z0-9]+/i', '-', iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title))));
+        $base = strtolower($base);
+        if ($base === '') {
+            $base = 'entrada-blog';
+        }
+
+        $slug = $base;
+        $n = 1;
+
+        while (true) {
+            if ($excludeId) {
+                $stmt = $this->db->prepare("SELECT id FROM blog_posts WHERE slug = :slug AND id <> :id LIMIT 1");
+                $stmt->execute(['slug' => $slug, 'id' => $excludeId]);
+            } else {
+                $stmt = $this->db->prepare("SELECT id FROM blog_posts WHERE slug = :slug LIMIT 1");
+                $stmt->execute(['slug' => $slug]);
+            }
+
+            if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
+                return $slug;
+            }
+
+            $n++;
+            $slug = $base . '-' . $n;
+        }
+    }
+
+    public function allPostsForAdmin(): array
+    {
+        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, status, published_at, created_at, updated_at
+                                  FROM blog_posts
+                                  ORDER BY COALESCE(published_at, created_at) DESC, id DESC");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    public function getPostByIdAdmin(int $id)
+    {
+        $stmt = $this->db->prepare("SELECT id, slug, title, excerpt, image_url, content, status, published_at
+                                    FROM blog_posts
+                                    WHERE id = :id
+                                    LIMIT 1");
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
+    }
+
+    public function createPost(array $data): int
+    {
+        $slug = $this->buildUniqueSlug((string)$data['title']);
+        $stmt = $this->db->prepare(
+            "INSERT INTO blog_posts (slug, title, excerpt, image_url, content, status, published_at)
+             VALUES (:slug, :title, :excerpt, :image_url, :content, :status, :published_at)"
+        );
+        $stmt->execute([
+            'slug' => $slug,
+            'title' => $data['title'],
+            'excerpt' => $data['excerpt'],
+            'image_url' => $data['image_url'] ?? '',
+            'content' => $data['content'],
+            'status' => $data['status'],
+            'published_at' => $data['published_at'],
+        ]);
+
+        return (int)$this->db->lastInsertId();
+    }
+
+    public function updatePost(int $id, array $data): void
+    {
+        $slug = $this->buildUniqueSlug((string)$data['title'], $id);
+        $stmt = $this->db->prepare(
+            "UPDATE blog_posts
+             SET slug = :slug,
+                 title = :title,
+                 excerpt = :excerpt,
+                 image_url = :image_url,
+                 content = :content,
+                 status = :status,
+                 published_at = :published_at
+             WHERE id = :id"
+        );
+        $stmt->execute([
+            'id' => $id,
+            'slug' => $slug,
+            'title' => $data['title'],
+            'excerpt' => $data['excerpt'],
+            'image_url' => $data['image_url'] ?? '',
+            'content' => $data['content'],
+            'status' => $data['status'],
+            'published_at' => $data['published_at'],
+        ]);
+    }
+
+    public function deletePost(int $id): void
+    {
+        $stmt = $this->db->prepare("DELETE FROM blog_posts WHERE id = :id");
+        $stmt->execute(['id' => $id]);
     }
 
     public function latestPosts(int $limit = 6): array

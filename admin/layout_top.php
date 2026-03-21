@@ -166,6 +166,12 @@
                         <i class="bi bi-link-45deg me-1"></i>Fuentes & Cron
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($active_page ?? '') === 'blog' ? 'active' : '' ?>"
+                       href="<?= APP_URL ?>/admin/blog-posts.php">
+                        <i class="bi bi-journal-richtext me-1"></i>Blog
+                    </a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item d-flex align-items-center me-3">

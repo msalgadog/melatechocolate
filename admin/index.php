@@ -110,6 +110,10 @@ require __DIR__ . '/layout_top.php';
            class="btn btn-admin-outline btn-sm">
             <i class="bi bi-file-earmark-arrow-up me-1"></i> Importar CSV
         </a>
+        <a href="<?= APP_URL ?>/admin/blog-posts.php"
+           class="btn btn-admin-outline btn-sm">
+            <i class="bi bi-journal-richtext me-1"></i> Blog
+        </a>
     </div>
 </div>
 
