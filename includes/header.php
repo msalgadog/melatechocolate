@@ -68,6 +68,14 @@ $titulo = isset($page_title) ? $page_title . ' | ' . APP_NAME : APP_NAME . ' —
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link"
+                       href="https://www.buymeacoffee.com/msalgadogonza"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="bi bi-cup-hot-fill"></i> Buy me a coffee
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'blog' ? 'active' : '' ?>"
                        href="<?= APP_URL ?>/blog">
                         <i class="bi bi-journal-text"></i> Blog

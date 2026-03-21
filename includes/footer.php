@@ -11,6 +11,11 @@
                     Portal de estadísticas, predicciones y resultados históricos
                     del Melate, Revancha y Revanchita de la Lotería Nacional de México.
                 </p>
+                <div class="mt-3">
+                    <a href="https://www.buymeacoffee.com/msalgadogonza" target="_blank" rel="noopener noreferrer">
+                        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+                    </a>
+                </div>
             </div>
 
             <div class="col-md-4">
