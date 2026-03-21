@@ -373,10 +373,10 @@ include __DIR__ . '/includes/header.php';
 
     <!-- CTA -->
     <div class="text-center">
-        <a href="estadisticas.php" class="btn btn-success btn-lg me-2">
+        <a href="<?= APP_URL ?>/estadisticas" class="btn btn-success btn-lg me-2">
             <i class="bi bi-bar-chart-fill"></i> Ver Estadísticas
         </a>
-        <a href="predicciones.php" class="btn btn-outline-success btn-lg">
+        <a href="<?= APP_URL ?>/predicciones" class="btn btn-outline-success btn-lg">
             <i class="bi bi-stars"></i> Herramientas de Predicción
         </a>
     </div>

@@ -14,7 +14,7 @@ include __DIR__ . '/includes/header.php';
         <p>No vendemos datos personales a terceros. Los datos se tratan con fines operativos y estadísticos.</p>
         <p>Si se muestran anuncios de terceros (por ejemplo, Google AdSense), esos proveedores pueden usar cookies para personalizar anuncios y medir rendimiento.</p>
         <p>Puedes gestionar cookies desde la configuración de tu navegador.</p>
-        <p class="mb-0">Para dudas sobre privacidad, usa la página de <a href="contacto.php">Contacto</a>.</p>
+        <p class="mb-0">Para dudas sobre privacidad, usa la página de <a href="<?= APP_URL ?>/contacto">Contacto</a>.</p>
     </div>
 </div>
 

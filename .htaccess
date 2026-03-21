@@ -1,0 +1,25 @@
+Options -MultiViews
+RewriteEngine On
+
+# --- No reescribir archivos/carpetas reales ---
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# --- Rutas amigables (frontend) ---
+RewriteRule ^$ index.php [L,QSA]
+RewriteRule ^blog/?$ blog.php [L,QSA]
+RewriteRule ^blog/([a-z0-9-]+)/?$ blog-articulo.php?slug=$1 [L,QSA,NC]
+RewriteRule ^estadisticas/juego/(melate|revancha|revanchita)/?$ estadisticas.php?juego=$1 [L,QSA,NC]
+RewriteRule ^estadisticas/?$ estadisticas.php [L,QSA]
+RewriteRule ^predicciones/?$ predicciones.php [L,QSA]
+RewriteRule ^historial/juego/(melate|revancha|revanchita)/pagina/([0-9]+)/?$ historial.php?juego=$1&pagina=$2 [L,QSA,NC]
+RewriteRule ^historial/juego/(melate|revancha|revanchita)/?$ historial.php?juego=$1 [L,QSA,NC]
+RewriteRule ^historial/?$ historial.php [L,QSA]
+RewriteRule ^reglas/?$ reglas.php [L,QSA]
+RewriteRule ^sobre-nosotros/?$ sobre-nosotros.php [L,QSA]
+RewriteRule ^contacto/?$ contacto.php [L,QSA]
+RewriteRule ^politica-privacidad/?$ politica-privacidad.php [L,QSA]
+RewriteRule ^terminos-condiciones/?$ terminos-condiciones.php [L,QSA]
+RewriteRule ^aviso-legal/?$ aviso-legal.php [L,QSA]
+RewriteRule ^upgrade/?$ upgrade.php [L,QSA]

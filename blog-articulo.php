@@ -27,7 +27,7 @@ include __DIR__ . '/includes/header.php';
         <div class="stat-card">
             <h1 class="fw-bold mb-3" style="color:var(--ml-cafe-oscuro)">Artículo no encontrado</h1>
             <p class="text-muted">El contenido solicitado no existe o fue removido.</p>
-            <a href="blog.php" class="btn btn-success btn-sm">Volver al blog</a>
+            <a href="<?= APP_URL ?>/blog" class="btn btn-success btn-sm">Volver al blog</a>
         </div>
     <?php else: ?>
         <article class="stat-card">
@@ -58,7 +58,7 @@ include __DIR__ . '/includes/header.php';
         </article>
 
         <div class="text-end mt-3">
-            <a href="blog.php" class="btn btn-outline-success btn-sm">Volver al blog</a>
+            <a href="<?= APP_URL ?>/blog" class="btn btn-outline-success btn-sm">Volver al blog</a>
         </div>
     <?php endif; ?>
 </div>

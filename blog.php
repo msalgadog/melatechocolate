@@ -35,7 +35,7 @@ include __DIR__ . '/includes/header.php';
             <div class="col-12 col-sm-6">
                 <article class="blog-card">
                     <a class="blog-card-thumb <?= $imgClass ?>"
-                       href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($post['slug']) ?>">
+                       href="<?= APP_URL ?>/blog/<?= urlencode($post['slug']) ?>">
                         <?php if (!empty($post['image_url'])): ?>
                             <img src="<?= htmlspecialchars($post['image_url']) ?>"
                                  alt="<?= htmlspecialchars($post['title']) ?>">
@@ -49,13 +49,13 @@ include __DIR__ . '/includes/header.php';
                             <?= !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : '' ?>
                         </p>
                         <h2 class="blog-card-title">
-                            <a href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($post['slug']) ?>">
+                            <a href="<?= APP_URL ?>/blog/<?= urlencode($post['slug']) ?>">
                                 <?= htmlspecialchars($post['title']) ?>
                             </a>
                         </h2>
                         <p class="blog-card-excerpt"><?= htmlspecialchars($post['excerpt']) ?></p>
                         <a class="blog-card-readmore"
-                           href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($post['slug']) ?>">
+                           href="<?= APP_URL ?>/blog/<?= urlencode($post['slug']) ?>">
                             Leer art&iacute;culo completo <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -74,7 +74,7 @@ include __DIR__ . '/includes/header.php';
                 <ul class="list-unstyled small mb-0">
                     <?php foreach (array_slice($posts, 0, 5) as $p): ?>
                     <li class="mb-2 pb-2 border-bottom">
-                        <a href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($p['slug']) ?>"
+                        <a href="<?= APP_URL ?>/blog/<?= urlencode($p['slug']) ?>"
                            class="text-decoration-none" style="color:var(--ml-cafe-oscuro)">
                             <?= htmlspecialchars($p['title']) ?>
                         </a>

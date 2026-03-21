@@ -119,7 +119,7 @@ require __DIR__ . '/layout_top.php';
                     </td>
                     <td class="small text-muted"><?= htmlspecialchars($post['slug']) ?></td>
                     <td class="text-end">
-                        <a href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode((string)$post['slug']) ?>"
+                        <a href="<?= APP_URL ?>/blog/<?= urlencode((string)$post['slug']) ?>"
                            class="btn btn-sm btn-admin-outline rounded-pill px-2 py-0"
                            target="_blank"
                            title="Ver">

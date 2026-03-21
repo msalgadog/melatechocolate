@@ -138,7 +138,7 @@ function renderPaginacion(int $paginaActual, int $totalPaginas, string $url): st
     $html = '<nav aria-label="Paginación"><ul class="pagination justify-content-center flex-wrap">';
 
     $html .= sprintf(
-        '<li class="page-item %s"><a class="page-link" href="%s&pagina=%d">«</a></li>',
+        '<li class="page-item %s"><a class="page-link" href="%s/pagina/%d">«</a></li>',
         $paginaActual <= 1 ? 'disabled' : '',
         $url, max(1, $paginaActual - 1)
     );
@@ -147,24 +147,24 @@ function renderPaginacion(int $paginaActual, int $totalPaginas, string $url): st
     $to   = min($totalPaginas, $paginaActual + 3);
 
     if ($from > 1) {
-        $html .= "<li class=\"page-item\"><a class=\"page-link\" href=\"{$url}&pagina=1\">1</a></li>";
+        $html .= "<li class=\"page-item\"><a class=\"page-link\" href=\"{$url}/pagina/1\">1</a></li>";
         if ($from > 2) $html .= '<li class="page-item disabled"><span class="page-link">…</span></li>';
     }
 
     for ($i = $from; $i <= $to; $i++) {
         $html .= sprintf(
-            '<li class="page-item %s"><a class="page-link" href="%s&pagina=%d">%d</a></li>',
+            '<li class="page-item %s"><a class="page-link" href="%s/pagina/%d">%d</a></li>',
             $i === $paginaActual ? 'active' : '', $url, $i, $i
         );
     }
 
     if ($to < $totalPaginas) {
         if ($to < $totalPaginas - 1) $html .= '<li class="page-item disabled"><span class="page-link">…</span></li>';
-        $html .= "<li class=\"page-item\"><a class=\"page-link\" href=\"{$url}&pagina={$totalPaginas}\">{$totalPaginas}</a></li>";
+        $html .= "<li class=\"page-item\"><a class=\"page-link\" href=\"{$url}/pagina/{$totalPaginas}\">{$totalPaginas}</a></li>";
     }
 
     $html .= sprintf(
-        '<li class="page-item %s"><a class="page-link" href="%s&pagina=%d">»</a></li>',
+        '<li class="page-item %s"><a class="page-link" href="%s/pagina/%d">»</a></li>',
         $paginaActual >= $totalPaginas ? 'disabled' : '',
         $url, min($totalPaginas, $paginaActual + 1)
     );

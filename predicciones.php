@@ -210,7 +210,7 @@ include __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </div>
                 <div class="text-center mt-3">
-                    <a href="predicciones.php" class="btn btn-outline-success btn-sm">
+                    <a href="<?= APP_URL ?>/predicciones" class="btn btn-outline-success btn-sm">
                         <i class="bi bi-arrow-clockwise"></i> Nueva sugerencia
                     </a>
                 </div>

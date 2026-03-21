@@ -83,15 +83,15 @@ include __DIR__ . '/includes/header.php';
     <ul class="nav nav-pills-verde nav-pills mb-4 flex-wrap">
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'melate' ? 'active' : '' ?>"
-               href="?juego=melate">🟢 Melate</a>
+               href="<?= APP_URL ?>/estadisticas/juego/melate">🟢 Melate</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'revancha' ? 'active' : '' ?>"
-               href="?juego=revancha">🔵 Revancha</a>
+               href="<?= APP_URL ?>/estadisticas/juego/revancha">🔵 Revancha</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'revanchita' ? 'active' : '' ?>"
-               href="?juego=revanchita">🟣 Revanchita</a>
+               href="<?= APP_URL ?>/estadisticas/juego/revanchita">🟣 Revanchita</a>
         </li>
     </ul>
 
@@ -281,7 +281,7 @@ include __DIR__ . '/includes/header.php';
     <!---->
 
     <div class="text-center mt-4">
-        <a href="predicciones.php" class="btn btn-success btn-lg">
+        <a href="<?= APP_URL ?>/predicciones" class="btn btn-success btn-lg">
             <i class="bi bi-stars"></i> Ver Predicciones y Herramientas
         </a>
     </div>

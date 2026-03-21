@@ -180,10 +180,10 @@ include __DIR__ . '/includes/header.php';
         $bImgClass = $blogColors[$bi % 5];
         $bIcon     = $blogIcons[$bi % 5];
     ?>
-    <div class="col-12 col-sm-6 col-lg-4">
+    <div class="col-12">
         <article class="blog-card">
             <a class="blog-card-thumb <?= $bImgClass ?>"
-               href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+               href="<?= APP_URL ?>/blog/<?= urlencode($bpost['slug']) ?>">
                 <?php if (!empty($bpost['image_url'])): ?>
                     <img src="<?= htmlspecialchars($bpost['image_url']) ?>"
                          alt="<?= htmlspecialchars($bpost['title']) ?>">
@@ -197,13 +197,13 @@ include __DIR__ . '/includes/header.php';
                     <?= !empty($bpost['published_at']) ? date('d M Y', strtotime($bpost['published_at'])) : '' ?>
                 </p>
                 <h2 class="blog-card-title">
-                    <a href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+                    <a href="<?= APP_URL ?>/blog/<?= urlencode($bpost['slug']) ?>">
                         <?= htmlspecialchars($bpost['title']) ?>
                     </a>
                 </h2>
                 <p class="blog-card-excerpt"><?= htmlspecialchars($bpost['excerpt']) ?></p>
                 <a class="blog-card-readmore"
-                   href="<?= APP_URL ?>/blog-articulo.php?slug=<?= urlencode($bpost['slug']) ?>">
+                   href="<?= APP_URL ?>/blog/<?= urlencode($bpost['slug']) ?>">
                     Leer art&iacute;culo completo <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
@@ -224,7 +224,7 @@ include __DIR__ . '/includes/header.php';
     <div class="row g-3 mb-4">
 
         <div class="col-6 col-md-3">
-            <a href="estadisticas.php" class="card card-mellatron text-decoration-none text-center p-3 d-block">
+            <a href="<?= APP_URL ?>/estadisticas" class="card card-mellatron text-decoration-none text-center p-3 d-block">
                 <div class="fs-2 mb-2">📊</div>
                 <strong class="text-success">Estadísticas</strong>
                 <p class="small text-muted mb-0">Números calientes, fríos, frecuencias</p>
@@ -232,7 +232,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="col-6 col-md-3">
-            <a href="predicciones.php" class="card card-mellatron text-decoration-none text-center p-3 d-block">
+            <a href="<?= APP_URL ?>/predicciones" class="card card-mellatron text-decoration-none text-center p-3 d-block">
                 <div class="fs-2 mb-2">🔮</div>
                 <strong class="text-success">Predicciones</strong>
                 <p class="small text-muted mb-0">Zodiacal, numerología, sugeridos</p>
@@ -240,7 +240,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="col-6 col-md-3">
-            <a href="historial.php" class="card card-mellatron text-decoration-none text-center p-3 d-block">
+            <a href="<?= APP_URL ?>/historial" class="card card-mellatron text-decoration-none text-center p-3 d-block">
                 <div class="fs-2 mb-2">📅</div>
                 <strong class="text-success">Historial</strong>
                 <p class="small text-muted mb-0">Todos los resultados históricos</p>
@@ -248,7 +248,7 @@ include __DIR__ . '/includes/header.php';
         </div>
 
         <div class="col-6 col-md-3">
-            <a href="reglas.php" class="card card-mellatron text-decoration-none text-center p-3 d-block">
+            <a href="<?= APP_URL ?>/reglas" class="card card-mellatron text-decoration-none text-center p-3 d-block">
                 <div class="fs-2 mb-2">📖</div>
                 <strong class="text-success">Reglas</strong>
                 <p class="small text-muted mb-0">Cómo jugar y ganar premios</p>

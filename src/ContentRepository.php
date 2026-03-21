@@ -267,7 +267,7 @@ class ContentRepository
         $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at
                                   FROM blog_posts
                                   WHERE status='published'
-                                  ORDER BY published_at DESC, id DESC
+                                  ORDER BY updated_at DESC, published_at DESC, id DESC
                                   LIMIT $limit");
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
@@ -277,7 +277,7 @@ class ContentRepository
         $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at
                                   FROM blog_posts
                                   WHERE status='published'
-                                  ORDER BY published_at DESC, id DESC");
+                                  ORDER BY updated_at DESC, published_at DESC, id DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 

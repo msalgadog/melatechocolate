@@ -16,23 +16,23 @@
             <div class="col-md-4">
                 <p class="footer-title">Navegar</p>
                 <ul class="list-unstyled small mb-0">
-                    <li><a href="<?= APP_URL ?>/index.php"><i class="bi bi-house-door"></i> Inicio</a></li>
-                    <li><a href="<?= APP_URL ?>/blog.php"><i class="bi bi-journal-text"></i> Blog</a></li>
-                    <li><a href="<?= APP_URL ?>/estadisticas.php"><i class="bi bi-bar-chart"></i> Estadísticas</a></li>
-                    <li><a href="<?= APP_URL ?>/predicciones.php"><i class="bi bi-stars"></i> Predicciones</a></li>
-                    <li><a href="<?= APP_URL ?>/historial.php"><i class="bi bi-clock-history"></i> Historial</a></li>
-                    <li><a href="<?= APP_URL ?>/reglas.php"><i class="bi bi-book"></i> Reglas del juego</a></li>
+                    <li><a href="<?= APP_URL ?>/"><i class="bi bi-house-door"></i> Inicio</a></li>
+                    <li><a href="<?= APP_URL ?>/blog"><i class="bi bi-journal-text"></i> Blog</a></li>
+                    <li><a href="<?= APP_URL ?>/estadisticas"><i class="bi bi-bar-chart"></i> Estadísticas</a></li>
+                    <li><a href="<?= APP_URL ?>/predicciones"><i class="bi bi-stars"></i> Predicciones</a></li>
+                    <li><a href="<?= APP_URL ?>/historial"><i class="bi bi-clock-history"></i> Historial</a></li>
+                    <li><a href="<?= APP_URL ?>/reglas"><i class="bi bi-book"></i> Reglas del juego</a></li>
                 </ul>
             </div>
 
             <div class="col-md-4">
                 <p class="footer-title">Legales y confianza</p>
                 <ul class="list-unstyled small mb-2">
-                    <li><a href="<?= APP_URL ?>/sobre-nosotros.php">Sobre nosotros</a></li>
-                    <li><a href="<?= APP_URL ?>/contacto.php">Contacto</a></li>
-                    <li><a href="<?= APP_URL ?>/politica-privacidad.php">Política de privacidad</a></li>
-                    <li><a href="<?= APP_URL ?>/terminos-condiciones.php">Términos y condiciones</a></li>
-                    <li><a href="<?= APP_URL ?>/aviso-legal.php">Aviso legal</a></li>
+                    <li><a href="<?= APP_URL ?>/sobre-nosotros">Sobre nosotros</a></li>
+                    <li><a href="<?= APP_URL ?>/contacto">Contacto</a></li>
+                    <li><a href="<?= APP_URL ?>/politica-privacidad">Política de privacidad</a></li>
+                    <li><a href="<?= APP_URL ?>/terminos-condiciones">Términos y condiciones</a></li>
+                    <li><a href="<?= APP_URL ?>/aviso-legal">Aviso legal</a></li>
                 </ul>
                 <p class="small mb-0">
                     <strong>No hay garantía de ganar.</strong> Este portal es informativo y recreativo,

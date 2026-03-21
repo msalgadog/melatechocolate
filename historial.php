@@ -51,7 +51,7 @@ switch ($juego) {
 }
 
 $totalPaginas = (int)ceil($total / $porPagina);
-$baseUrl      = "historial.php?juego={$juego}";
+$baseUrl      = APP_URL . "/historial/juego/{$juego}";
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -69,15 +69,15 @@ include __DIR__ . '/includes/header.php';
     <ul class="nav nav-pills-verde nav-pills mb-3 flex-wrap">
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'melate' ? 'active' : '' ?>"
-               href="?juego=melate">🟢 Melate</a>
+               href="<?= APP_URL ?>/historial/juego/melate">🟢 Melate</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'revancha' ? 'active' : '' ?>"
-               href="?juego=revancha">🔵 Revancha</a>
+               href="<?= APP_URL ?>/historial/juego/revancha">🔵 Revancha</a>
         </li>
         <li class="nav-item">
             <a class="nav-link <?= $juego === 'revanchita' ? 'active' : '' ?>"
-               href="?juego=revanchita">🟣 Revanchita</a>
+               href="<?= APP_URL ?>/historial/juego/revanchita">🟣 Revanchita</a>
         </li>
     </ul>
 
@@ -91,7 +91,7 @@ include __DIR__ . '/includes/header.php';
             <i class="bi bi-search"></i> Buscar
         </button>
         <?php if ($buscarConcurso): ?>
-            <a href="?juego=<?= $juego ?>" class="btn btn-outline-secondary">
+            <a href="<?= APP_URL ?>/historial/juego/<?= $juego ?>" class="btn btn-outline-secondary">
                 <i class="bi bi-x"></i> Limpiar
             </a>
         <?php endif; ?>

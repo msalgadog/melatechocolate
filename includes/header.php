@@ -62,42 +62,42 @@ $titulo = isset($page_title) ? $page_title . ' | ' . APP_NAME : APP_NAME . ' —
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'inicio' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/index.php">
+                       href="<?= APP_URL ?>/">
                         <i class="bi bi-house-door-fill"></i> Inicio
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'blog' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/blog.php">
+                       href="<?= APP_URL ?>/blog">
                         <i class="bi bi-journal-text"></i> Blog
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'estadisticas' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/estadisticas.php">
+                       href="<?= APP_URL ?>/estadisticas">
                         <i class="bi bi-bar-chart-fill"></i> Estadísticas
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'predicciones' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/predicciones.php">
+                       href="<?= APP_URL ?>/predicciones">
                         <i class="bi bi-stars"></i> Predicciones
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'historial' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/historial.php">
+                       href="<?= APP_URL ?>/historial">
                         <i class="bi bi-clock-history"></i> Historial
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link <?= $currentPage === 'reglas' ? 'active' : '' ?>"
-                       href="<?= APP_URL ?>/reglas.php">
+                       href="<?= APP_URL ?>/reglas">
                         <i class="bi bi-book-fill"></i> Reglas
                     </a>
                 </li>
