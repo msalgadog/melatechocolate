@@ -124,6 +124,19 @@ class StatsCalculator
         array $retardo,
         int $cantidad = 6
     ): array {
+        $det = self::generarSugerenciaDetallada($frecuencia, $retardo, $cantidad);
+        return $det['numeros'];
+    }
+
+    /**
+     * Genera una combinación sugerida y devuelve también
+     * el tipo de selección por número: caliente|retardo|frio.
+     */
+    public static function generarSugerenciaDetallada(
+        array $frecuencia,
+        array $retardo,
+        int $cantidad = 6
+    ): array {
         // Top 10 calientes
         arsort($frecuencia);
         $calientes = array_keys(array_slice($frecuencia, 0, 15, true));
@@ -137,30 +150,48 @@ class StatsCalculator
         $frios = array_keys(array_slice($frecuencia, 0, 15, true));
 
         $seleccion = [];
+        $tiposSeleccion = [];
 
         // 3 calientes
         shuffle($calientes);
         foreach ($calientes as $n) {
             if (count($seleccion) >= 3) break;
-            if (!in_array($n, $seleccion)) $seleccion[] = $n;
+            if (!in_array($n, $seleccion)) {
+                $seleccion[] = $n;
+                $tiposSeleccion[$n] = 'caliente';
+            }
         }
 
         // 2 atrasados
         shuffle($atrasados);
         foreach ($atrasados as $n) {
             if (count($seleccion) >= 5) break;
-            if (!in_array($n, $seleccion)) $seleccion[] = $n;
+            if (!in_array($n, $seleccion)) {
+                $seleccion[] = $n;
+                $tiposSeleccion[$n] = 'retardo';
+            }
         }
 
         // 1 frío
         shuffle($frios);
         foreach ($frios as $n) {
             if (count($seleccion) >= $cantidad) break;
-            if (!in_array($n, $seleccion)) $seleccion[] = $n;
+            if (!in_array($n, $seleccion)) {
+                $seleccion[] = $n;
+                $tiposSeleccion[$n] = 'frio';
+            }
         }
 
         sort($seleccion);
-        return $seleccion;
+        $tiposOrdenados = [];
+        foreach ($seleccion as $n) {
+            $tiposOrdenados[$n] = $tiposSeleccion[$n] ?? 'caliente';
+        }
+
+        return [
+            'numeros' => $seleccion,
+            'tipos' => $tiposOrdenados,
+        ];
     }
 
     /**

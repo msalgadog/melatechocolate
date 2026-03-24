@@ -103,6 +103,13 @@ include __DIR__ . '/includes/header.php';
     <div class="stat-card mb-4">
         <h5><i class="bi bi-grid-3x3-gap-fill me-1"></i> Mapa de Calor — Frecuencia histórica (1-56)</h5>
         <p class="small text-muted">Rojo = más frecuente / Azul = menos frecuente</p>
+        <div class="d-flex align-items-center justify-content-end gap-2 mb-2">
+            <label for="heatmap-order" class="small text-muted mb-0">Ordenar:</label>
+            <select id="heatmap-order" class="form-select form-select-sm" style="max-width: 320px;">
+                <option value="freq_desc" selected>De mayor frecuencia a menor frecuencia</option>
+                <option value="num_desc">De número mayor a número menor</option>
+            </select>
+        </div>
         <div class="heatmap-grid" id="heatmap-grid">
             <?php foreach ($frecuencia as $num => $freq):
                 $rango  = $maxFreq - $minFreq;
@@ -110,6 +117,8 @@ include __DIR__ . '/includes/header.php';
                 $nivel  = round($pct * 9);
             ?>
                 <div class="heatmap-cell heat-<?= $nivel ?>"
+                     data-num="<?= (int)$num ?>"
+                     data-freq="<?= (int)$freq ?>"
                      data-bs-toggle="tooltip"
                      title="Número <?= $num ?>: <?= $freq ?> veces">
                     <?= $num ?>
@@ -127,7 +136,7 @@ include __DIR__ . '/includes/header.php';
                 <?php foreach ($calientes as $num => $freq): ?>
                     <div class="freq-bar-container">
                         <div class="bola bola-caliente bola-sm"><?= $num ?></div>
-                        <div class="freq-bar"
+                        <div class="freq-bar freq-bar-hot"
                              style="width:<?= round($freq / $maxFreq * 100) ?>%"></div>
                         <span class="freq-count"><?= $freq ?> veces</span>
                     </div>
@@ -142,8 +151,8 @@ include __DIR__ . '/includes/header.php';
                 <?php foreach ($frios as $num => $freq): ?>
                     <div class="freq-bar-container">
                         <div class="bola bola-frio bola-sm"><?= $num ?></div>
-                        <div class="freq-bar"
-                             style="width:<?= round($freq / $maxFreq * 100) ?>%;background:linear-gradient(90deg,#42a5f5,#0d47a1)"></div>
+                        <div class="freq-bar freq-bar-cold"
+                             style="width:<?= round($freq / $maxFreq * 100) ?>%"></div>
                         <span class="freq-count"><?= $freq ?> veces</span>
                     </div>
                 <?php endforeach; ?>
@@ -222,30 +231,22 @@ include __DIR__ . '/includes/header.php';
     <div class="stat-card mb-4">
         <h5><i class="bi bi-people-fill me-1"></i> Top 15 Pares de Números más Frecuentes</h5>
         <p class="small text-muted mb-3">Pares de números que han salido juntos más veces en la historia del Melate.</p>
-        <div class="table-responsive">
-            <table class="table table-sm table-hover align-middle">
-                <thead class="table-success">
-                    <tr><th>#</th><th>Par</th><th>Veces juntos</th></tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($pares as $i => $par): ?>
-                        <tr>
-                            <td><strong><?= $i + 1 ?></strong></td>
-                            <td>
-                                <?= renderBola((int)$par['a'], 'melate', 'bola-sm') ?>
-                                <?= renderBola((int)$par['b'], 'melate', 'bola-sm') ?>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <div style="height:12px;width:<?= round($par['veces'] / $pares[0]['veces'] * 200) ?>px;
-                                         background:var(--ml-verde-claro);border-radius:3px;min-width:4px"></div>
-                                    <span><?= $par['veces'] ?></span>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="pair-grid">
+            <?php foreach ($pares as $i => $par): ?>
+                <div class="pair-card">
+                    <div class="pair-card-head">
+                        <span class="pair-rank">#<?= $i + 1 ?></span>
+                        <span class="pair-count"><?= (int)$par['veces'] ?> veces</span>
+                    </div>
+                    <div class="pair-balls">
+                        <?= renderBola((int)$par['a'], 'melate', 'bola-sm') ?>
+                        <?= renderBola((int)$par['b'], 'melate', 'bola-sm') ?>
+                    </div>
+                    <div class="pair-bar-wrap">
+                        <div class="pair-bar" style="width:<?= round($par['veces'] / $pares[0]['veces'] * 100) ?>%"></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
     <?php endif; ?>

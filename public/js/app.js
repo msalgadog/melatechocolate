@@ -8,23 +8,10 @@
 // Animación de entrada de bolas
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-    animateBolas();
     initTooltips();
     initCounters();
+    initHeatmapSorter();
 });
-
-function animateBolas() {
-    const bolas = document.querySelectorAll('.bola');
-    bolas.forEach((b, i) => {
-        b.style.opacity = '0';
-        b.style.transform = 'scale(0)';
-        setTimeout(() => {
-            b.style.transition = `opacity .3s ease, transform .3s ease`;
-            b.style.opacity = '1';
-            b.style.transform = 'scale(1)';
-        }, i * 80);
-    });
-}
 
 function initTooltips() {
     const els = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -77,8 +64,7 @@ function generarMelatico(containerId, btnId) {
             row.innerHTML = `<small class="text-muted fw-bold" style="width:60px">Juego ${idx + 1}</small>`;
             combo.forEach(n => {
                 const b = document.createElement('div');
-                b.className = 'bola bola-sm bola-melate bola-animate';
-                b.style.animationDelay = `${idx * 0.1 + 0.05}s`;
+                b.className = 'bola bola-sm bola-melate';
                 b.textContent = n;
                 row.appendChild(b);
             });
@@ -157,6 +143,38 @@ function initHeatmap(heatData) {
     });
 
     initTooltips();
+}
+
+function initHeatmapSorter() {
+    const grid = document.getElementById('heatmap-grid');
+    const orderSelect = document.getElementById('heatmap-order');
+    if (!grid || !orderSelect) return;
+
+    const sortCells = (mode) => {
+        const cells = Array.from(grid.querySelectorAll('.heatmap-cell'));
+        cells.sort((a, b) => {
+            const numA = parseInt(a.dataset.num || '0', 10);
+            const numB = parseInt(b.dataset.num || '0', 10);
+            const freqA = parseInt(a.dataset.freq || '0', 10);
+            const freqB = parseInt(b.dataset.freq || '0', 10);
+
+            if (mode === 'freq_desc') {
+                if (freqB !== freqA) return freqB - freqA;
+                return numB - numA;
+            }
+
+            if (mode === 'num_desc') {
+                return numB - numA;
+            }
+
+            return 0;
+        });
+
+        cells.forEach((cell) => grid.appendChild(cell));
+    };
+
+    sortCells(orderSelect.value);
+    orderSelect.addEventListener('change', () => sortCells(orderSelect.value));
 }
 
 // ============================================================

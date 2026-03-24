@@ -50,7 +50,18 @@ body {
     font-size: 1.5rem;
     letter-spacing: .04em;
     text-decoration: none;
-    filter: drop-shadow(0 2px 6px rgba(255,255,255,.3));
+    display: inline-flex;
+    align-items: center;
+    filter: none;
+    padding: 0;
+}
+.navbar-mellatron .navbar-brand .navbar-brand-logo {
+    display: block;
+    width: auto;
+    height: 42px;
+    max-width: min(72vw, 360px);
+    object-fit: contain;
+    filter: drop-shadow(0 2px 6px rgba(255,255,255,.25));
 }
 .navbar-mellatron .nav-link {
     color: rgba(255,255,255,.88) !important;
@@ -158,22 +169,28 @@ body {
 /* Bolas para estadísticas (caliente/frio/normal) */
 .bola-caliente   { background: linear-gradient(145deg, #c86432, #8b4513); color: #fff; }
 .bola-frio       { background: linear-gradient(145deg, #4d7a8f, #2c5282); color: #fff; }
+.bola-retardo    { background: linear-gradient(145deg, #8e44ad, #5b2c6f); color: #fff; }
 .bola-normal     { background: linear-gradient(145deg, #8B7355, #5D4E37); color: #fff; }
 .bola-sugerida   { background: linear-gradient(145deg, #f0c040, #d4a70e); color: #212529; }
 .bola-zodiacal   { background: linear-gradient(145deg, #8b5a8f, #5d3d6b); color: #fff; }
 
+/* Predicciones: combinación sugerida por estadística */
+.bola-sug-caliente { background: linear-gradient(145deg, #ef5350, #c62828); color: #fff; }
+.bola-sug-frio     { background: linear-gradient(145deg, #64b5f6, #1565c0); color: #fff; }
+.bola-sug-retardo  { background: linear-gradient(145deg, #ab47bc, #6a1b9a); color: #fff; }
+
 /* Logo con efecto chocolate 3D */
 .logo-chocolate {
     display: block;
-    width: auto;
-    max-width: 100%;
+    width: min(100%, 760px);
     height: auto;
+    max-height: none;
+    object-fit: contain;
     filter: drop-shadow(0 0 8px rgba(255, 245, 225, 0.4));
     transition: transform 0.3s ease;
 }
 .hero-banner .logo-chocolate {
-    height: clamp(72px, 18vw, 120px);
-    max-width: min(100%, 420px);
+    width: min(100%, 760px);
 }
 .logo-chocolate:hover {
     transform: scale(1.05);
@@ -201,11 +218,12 @@ body {
 
 /* ---- Badges ---- */
 .badge-concurso {
-    background: var(--ml-verde-claro);
-    color: #fff;
+    background: rgba(240, 192, 64, .82);
+    color: #1f1105;
     font-size: .78rem;
     border-radius: 6px;
     padding: .2rem .55rem;
+    font-weight: 700;
 }
 .badge-bolsa {
     background: var(--ml-dorado);
@@ -221,9 +239,14 @@ body {
 .freq-bar   {
     height: 16px;
     border-radius: 4px;
-    background: linear-gradient(90deg, var(--ml-cafe-medio), var(--ml-cafe-oscuro));
     transition: width .5s ease;
     min-width: 4px;
+}
+.freq-bar-hot {
+    background: linear-gradient(90deg, #ffb347 0%, #ff7043 45%, #e53935 100%);
+}
+.freq-bar-cold {
+    background: linear-gradient(90deg, #64b5f6 0%, #1e88e5 45%, #0d47a1 100%);
 }
 .freq-count { font-size: .8rem; color: #666; }
 
@@ -246,6 +269,13 @@ body {
 .tabla-historial th { background: var(--ml-cafe-oscuro); color: #fff; }
 .tabla-historial td { vertical-align: middle; }
 .tabla-historial .bola { width: 30px; height: 30px; font-size: .78rem; }
+.historial-page .bola {
+    animation: none !important;
+    transition: none !important;
+}
+.historial-page .bola:hover {
+    transform: none !important;
+}
 
 /* Fila de sorteo con Primer Premio */
 .fila-ganador td {
@@ -254,6 +284,11 @@ body {
     border-bottom: 2px solid var(--ml-dorado) !important;
 }
 .fila-ganador td:first-child { border-left: 4px solid var(--ml-dorado) !important; }
+.fila-ganador .badge-concurso,
+.tabla-historial.table-hover tbody tr:hover .badge-concurso {
+    color: #1f1105 !important;
+    background: rgba(240, 192, 64, .95);
+}
 
 /* ---- Predicciones / Zodiac ---- */
 .zodiac-card {
@@ -321,10 +356,13 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
     .hero-banner .container { padding: 1.5rem 0; }
     .hero-banner h1 { margin-bottom: .75rem; }
     .hero-banner .logo-chocolate {
-        height: auto;
-        width: min(100%, 260px);
+        width: min(100%, 320px);
     }
     .hero-banner .bolsa-value { font-size: 1.6rem; }
+    .navbar-mellatron .navbar-brand .navbar-brand-logo {
+        height: 34px;
+        max-width: min(74vw, 250px);
+    }
 }
 
 @media (min-width: 1400px) {
@@ -344,38 +382,50 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
 /* ---- Gráfica de calor (heatmap) ---- */
 .heatmap-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(34px, 34px));
+    justify-content: center;
     gap: 6px;
     padding: .5rem;
 }
 @media (max-width: 576px) {
-    .heatmap-grid { grid-template-columns: repeat(7, 1fr); }
+    .heatmap-grid {
+        grid-template-columns: repeat(auto-fill, minmax(30px, 30px));
+        gap: 5px;
+    }
 }
 .heatmap-cell {
-    aspect-ratio: 1;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: .78rem;
+    font-size: .68rem;
     font-weight: 700;
     cursor: default;
     transition: transform .15s;
     box-shadow: 0 2px 5px rgba(0,0,0,.12);
 }
+@media (max-width: 576px) {
+    .heatmap-cell {
+        width: 30px;
+        height: 30px;
+        font-size: .62rem;
+    }
+}
 .heatmap-cell:hover { transform: scale(1.18); }
 
-/* Calor visual desde frío (azul mate) → caliente (café/rojo) via crema/dorado */
-.heat-0  { background:#e8dcc8; color:#5d4e37; }
-.heat-1  { background:#e0cdb5; color:#5d4e37; }
-.heat-2  { background:#d8bfa3; color:#4a3c28; }
-.heat-3  { background:#d0b191; color:#4a3c28; }
-.heat-4  { background:#c8a37f; color:#fff; }
-.heat-5  { background:#f0c040; color:#5d4e37; }
-.heat-6  { background:#e8b040; color:#fff; }
-.heat-7  { background:#d9963d; color:#fff; }
-.heat-8  { background:#c17c34; color:#fff; }
-.heat-9  { background:#a85c2c; color:#fff; }
+/* Calor visual estándar: frío (azul) → neutro (amarillo) → caliente (rojo) */
+.heat-0  { background:#313695; color:#fff; }
+.heat-1  { background:#4575b4; color:#fff; }
+.heat-2  { background:#74add1; color:#10233a; }
+.heat-3  { background:#abd9e9; color:#10233a; }
+.heat-4  { background:#e0f3f8; color:#16324a; }
+.heat-5  { background:#fee090; color:#4a2a00; }
+.heat-6  { background:#fdae61; color:#4a1f00; }
+.heat-7  { background:#f46d43; color:#fff; }
+.heat-8  { background:#d73027; color:#fff; }
+.heat-9  { background:#a50026; color:#fff; }
 
 /* ---- Google Adsense placeholder ---- */
 .ad-slot {
@@ -459,6 +509,54 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
     align-self: flex-start;
 }
 .blog-card-readmore:hover { color: var(--ml-dorado-dark); border-color: var(--ml-dorado-dark); }
+
+/* Estadísticas: pares frecuentes en cuadrícula */
+.pair-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: .85rem;
+}
+.pair-card {
+    border: 1px solid rgba(61,40,23,.16);
+    border-radius: 10px;
+    background: #fff;
+    padding: .7rem .75rem;
+}
+.pair-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-bottom: .55rem;
+}
+.pair-rank {
+    font-weight: 800;
+    color: var(--ml-cafe-oscuro);
+    font-size: .9rem;
+}
+.pair-count {
+    font-size: .78rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+.pair-balls {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    margin-bottom: .55rem;
+}
+.pair-bar-wrap {
+    height: 8px;
+    background: #efe9df;
+    border-radius: 999px;
+    overflow: hidden;
+}
+.pair-bar {
+    height: 100%;
+    min-width: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f7b955, #e2822a);
+}
 
 /* Artículo de blog */
 .blog-h2 {

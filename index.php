@@ -72,7 +72,7 @@ include __DIR__ . '/includes/header.php';
         <div class="row align-items-center">
             <div class="col-md-7">
                 <h1 class="mb-1">
-                    <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo.png" alt="Melate el Chocolate">
+                    <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo_amarillo.png" alt="Melate el Chocolate">
                     <span class="visually-hidden">Melate el Chocolate: resultados, estadísticas y predicciones del Melate mexicano</span>
                 </h1>
                 <p class="mb-0 fs-5">Estadísticas, predicciones y resultados del Melate Mexicano</p>

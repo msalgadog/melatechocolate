@@ -91,7 +91,8 @@ $seoJsonLd = $seo_json_ld ?? null;
     <div class="container-fluid container-xl">
 
         <a class="navbar-brand" href="<?= APP_URL ?>/index.php">
-            Melate el Chocolate
+            <img src="<?= APP_URL ?>/public/img/logo_amarillo.png" alt="Melate el Chocolate" class="navbar-brand-logo">
+            <span class="visually-hidden">Melate el Chocolate</span>
         </a>
 
         <button class="navbar-toggler" type="button"

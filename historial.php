@@ -53,10 +53,57 @@ switch ($juego) {
 $totalPaginas = (int)ceil($total / $porPagina);
 $baseUrl      = APP_URL . "/historial/juego/{$juego}";
 
+$analisisGanadorPorConcurso = [];
+$analysisModalIds = [];
+if ($juego === 'melate') {
+    foreach ($sorteos as $row) {
+        if (empty($row['ganador'])) {
+            continue;
+        }
+
+        $concurso = (int)$row['concurso'];
+        $nums = [
+            (int)$row['r1'], (int)$row['r2'], (int)$row['r3'],
+            (int)$row['r4'], (int)$row['r5'], (int)$row['r6'],
+        ];
+        sort($nums);
+
+        $pares = 0;
+        foreach ($nums as $n) {
+            if ($n % 2 === 0) {
+                $pares++;
+            }
+        }
+        $impares = 6 - $pares;
+        $suma = array_sum($nums);
+
+        $consecutivos = [];
+        for ($i = 0; $i < count($nums) - 1; $i++) {
+            if (($nums[$i + 1] - $nums[$i]) === 1) {
+                $consecutivos[] = $nums[$i] . '-' . $nums[$i + 1];
+            }
+        }
+
+        $analisis = $repo->analizarCombinacion($nums);
+        $modalId = 'analisis-ganador-' . $concurso;
+        $analysisModalIds[$concurso] = $modalId;
+        $analisisGanadorPorConcurso[$concurso] = [
+            'modal_id' => $modalId,
+            'row' => $row,
+            'nums' => $nums,
+            'suma' => $suma,
+            'pares' => $pares,
+            'impares' => $impares,
+            'consecutivos' => $consecutivos,
+            'analisis' => $analisis,
+        ];
+    }
+}
+
 include __DIR__ . '/includes/header.php';
 ?>
 
-<div class="container py-4">
+<div class="container py-4 historial-page">
 
     <h2 class="fw-bold mb-1" style="color:var(--ml-verde-oscuro)">
         <i class="bi bi-clock-history"></i> Historial — <?= $tipoNombre ?>
@@ -204,7 +251,7 @@ include __DIR__ . '/includes/header.php';
                 </thead>
                 <tbody>
                     <?php foreach ($sorteos as $row): ?>
-                        <?= renderFilaHistorial($row, $juego) ?>
+                        <?= renderFilaHistorial($row, $juego, ['analysisModalIds' => $analysisModalIds]) ?>
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -225,6 +272,64 @@ include __DIR__ . '/includes/header.php';
             <?= renderPaginacion($pagina, $totalPaginas, $baseUrl) ?>
         </div>
     </div>
+
+    <?php if ($juego === 'melate' && !empty($analisisGanadorPorConcurso)): ?>
+        <?php foreach ($analisisGanadorPorConcurso as $concurso => $data):
+            $rowA = $data['row'];
+            $ana = $data['analisis'];
+            $topPair = $ana['pares'][0] ?? null;
+            $consecTxt = !empty($data['consecutivos']) ? implode(', ', $data['consecutivos']) : 'Sin consecutivos';
+        ?>
+        <div class="modal fade" id="<?= htmlspecialchars($data['modal_id']) ?>" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            🏆 Análisis de combinación ganadora — Concurso #<?= (int)$concurso ?>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2 small text-muted">
+                            Fecha: <?= formatFecha((string)$rowA['fecha']) ?> · Bolsa: <?= formatBolsa((int)$rowA['bolsa']) ?>
+                        </div>
+                        <div class="bola-container mb-3">
+                            <?php foreach ($data['nums'] as $n): ?>
+                                <?= renderBola((int)$n, 'melate', 'bola-sm') ?>
+                            <?php endforeach; ?>
+                            <span class="sep-adicional">+</span>
+                            <?= renderBola((int)$rowA['r7'], 'adicional', 'bola-sm') ?>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 col-md-3"><div class="stat-card py-2 px-3 mb-0"><div class="small text-muted">Suma</div><div class="fw-bold"><?= (int)$data['suma'] ?></div></div></div>
+                            <div class="col-6 col-md-3"><div class="stat-card py-2 px-3 mb-0"><div class="small text-muted">Par / Impar</div><div class="fw-bold"><?= (int)$data['pares'] ?> / <?= (int)$data['impares'] ?></div></div></div>
+                            <div class="col-6 col-md-3"><div class="stat-card py-2 px-3 mb-0"><div class="small text-muted">Pureza</div><div class="fw-bold"><?= (int)$ana['pureza'] ?>/100</div></div></div>
+                            <div class="col-6 col-md-3"><div class="stat-card py-2 px-3 mb-0"><div class="small text-muted">Pares vírgenes</div><div class="fw-bold"><?= (int)$ana['virgin_pairs'] ?>/15</div></div></div>
+                        </div>
+
+                        <div class="mb-2"><strong>Consecutivos:</strong> <?= htmlspecialchars($consecTxt) ?></div>
+                        <div class="mb-2"><strong>Frecuencia promedio de pares:</strong> <?= htmlspecialchars((string)$ana['avg_pair_freq']) ?></div>
+                        <?php if ($topPair): ?>
+                            <div class="mb-2">
+                                <strong>Par más frecuente de la combinación:</strong>
+                                <?= (int)$topPair['a'] ?>-<?= (int)$topPair['b'] ?> (<?= (int)$topPair['veces'] ?> veces)
+                            </div>
+                        <?php endif; ?>
+                        <div class="mb-0">
+                            <strong>Histórico similar:</strong>
+                            <?= count($ana['similares']) ?> sorteos con 4-5 coincidencias,
+                            <?= count($ana['exactos']) ?> coincidencias exactas.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
     <!---->
 

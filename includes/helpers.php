@@ -86,7 +86,7 @@ function formatFecha(string $fecha): string
  * Renderiza fila de la tabla de historial
  * @param string $tipo melate|revancha|revanchita
  */
-function renderFilaHistorial(array $row, string $tipo): string
+function renderFilaHistorial(array $row, string $tipo, array $opts = []): string
 {
     $bolsa    = formatBolsa((int)$row['bolsa']);
     $fecha    = formatFecha($row['fecha']);
@@ -94,8 +94,18 @@ function renderFilaHistorial(array $row, string $tipo): string
     $trClass  = $ganador ? ' class="fila-ganador"' : '';
     $html     = "<tr{$trClass}>";
     if ($ganador) {
+        $analysisModalIds = $opts['analysisModalIds'] ?? [];
+        $concurso = (int)$row['concurso'];
+        $modalId = $analysisModalIds[$concurso] ?? '';
         $html .= '<td><span class="badge-concurso">' . $row['concurso'] . '</span>';
-        $html .= ' <span class="badge bg-warning text-dark" title="¡Primer Premio!">🏆 1er Premio</span></td>';
+        if ($modalId !== '') {
+            $html .= ' <button type="button" class="badge bg-warning text-dark border-0"'
+                  . ' style="cursor:pointer" title="Analizar combinación ganadora"'
+                  . ' data-bs-toggle="modal" data-bs-target="#' . htmlspecialchars((string)$modalId) . '">'
+                  . '🏆 1er Premio</button></td>';
+        } else {
+            $html .= ' <span class="badge bg-warning text-dark" title="¡Primer Premio!">🏆 1er Premio</span></td>';
+        }
     } else {
         $html .= "<td><span class=\"badge-concurso\">{$row['concurso']}</span></td>";
     }

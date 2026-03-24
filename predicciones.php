@@ -163,7 +163,9 @@ if (!empty($_POST['n'])) {
 }
 
 // 4) Sugerencia estadística
-$sugerencia = StatsCalculator::generarSugerencia($freqMelate, $retardoMelate);
+$sugerenciaDet = StatsCalculator::generarSugerenciaDetallada($freqMelate, $retardoMelate);
+$sugerencia = $sugerenciaDet['numeros'];
+$sugerenciaTipos = $sugerenciaDet['tipos'];
 $classSug   = StatsCalculator::clasificarNumeros($sugerencia, $freqMelate);
 
 // Números de la semana
@@ -201,14 +203,23 @@ include __DIR__ . '/includes/header.php';
                 </p>
                 <div class="bola-container justify-content-center">
                     <?php foreach ($sugerencia as $n):
-                        $nivel = $classSug[$n]['nivel']; ?>
-                        <div class="bola bola-<?= $nivel === 'caliente' ? 'caliente' : ($nivel === 'frio' ? 'frio' : 'melate') ?> bola-lg"
+                        $tipoSel = $sugerenciaTipos[$n] ?? 'caliente';
+                        $claseBola = $tipoSel === 'retardo'
+                            ? 'bola-sug-retardo'
+                            : ($tipoSel === 'frio' ? 'bola-sug-frio' : 'bola-sug-caliente');
+                        $labelTipo = $tipoSel === 'retardo' ? 'Retardo alto ⏳' : ($tipoSel === 'frio' ? 'Frío ❄️' : 'Caliente 🔥'); ?>
+                        <div class="bola <?= $claseBola ?> bola-lg"
                              data-bs-toggle="tooltip"
-                             title="Frecuencia: <?= $classSug[$n]['frecuencia'] ?> <?= $nivel === 'caliente' ? '🔥' : ($nivel === 'frio' ? '❄️' : '') ?>">
+                             title="<?= $labelTipo ?> | Frecuencia: <?= $classSug[$n]['frecuencia'] ?>">
                             <?= $n ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
+                <p class="small text-muted text-center mt-2 mb-0">
+                    <span class="me-3">🔥 Caliente</span>
+                    <span class="me-3">⏳ Retardo alto</span>
+                    <span>❄️ Frío</span>
+                </p>
                 <div class="text-center mt-3">
                     <a href="<?= APP_URL ?>/predicciones" class="btn btn-outline-success btn-sm">
                         <i class="bi bi-arrow-clockwise"></i> Nueva sugerencia
