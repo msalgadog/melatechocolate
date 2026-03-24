@@ -14,7 +14,7 @@ function mellatronSanitizeBlogHtml(string $html): string
     $html = preg_replace('/\son[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $html) ?? '';
     $html = preg_replace('/(href|src)\s*=\s*(["\'])\s*javascript:[^\2]*\2/i', '$1="#"', $html) ?? '';
 
-    return strip_tags($html, '<p><br><strong><b><em><i><u><h2><h3><h4><ul><ol><li><blockquote><a><img><table><thead><tbody><tr><th><td><hr>');
+    return strip_tags($html, '<p><br><strong><b><em><i><u><span><h2><h3><h4><ul><ol><li><blockquote><a><img><table><thead><tbody><tr><th><td><hr>');
 }
 
 function mellatronDeleteManagedBlogImage(string $imageUrl): void
@@ -289,9 +289,11 @@ tinymce.init({
     menubar: false,
     height: 520,
     skin: 'oxide-dark',
-    content_css: 'dark',
-    plugins: 'link lists table image code',
-    toolbar: 'undo redo | blocks | bold italic underline | bullist numlist | link image table | removeformat | code'
+    content_css: ['dark', '<?= APP_URL ?>/public/css/style.css'],
+    body_class: 'blog-article-content',
+    content_style: 'body{background:#3D2817;padding:16px;} table{width:100% !important;}',
+    plugins: 'link lists table image code advlist autolink charmap fullscreen quickbars',
+    toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table charmap | removeformat | code fullscreen'
 });
 </script>
 

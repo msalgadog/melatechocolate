@@ -13,6 +13,7 @@ require_once __DIR__ . '/includes/helpers.php';
 
 $pagina_actual  = 'inicio';
 $page_title     = 'Últimos Resultados';
+$page_desc      = 'Resultados del Melate, Revancha y Revanchita con estadísticas, historial y predicciones para jugadores en México.';
 $adsense_script = true;
 
 // Datos
@@ -31,6 +32,37 @@ $contentRepo = new ContentRepository();
 $contentRepo->ensureSeedPosts();
 $blogPosts = $contentRepo->latestPosts(5);
 
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+$appUrl = (string)(APP_URL ?? '');
+$siteBaseUrl = preg_match('#^https?://#i', $appUrl) === 1
+    ? rtrim($appUrl, '/')
+    : $scheme . '://' . $host . rtrim($appUrl, '/');
+$homeUrl = $siteBaseUrl . '/';
+
+$seo_json_ld = [
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type' => 'WebSite',
+            '@id' => $homeUrl . '#website',
+            'url' => $homeUrl,
+            'name' => APP_NAME,
+            'description' => $page_desc,
+            'inLanguage' => 'es-MX',
+        ],
+        [
+            '@type' => 'WebPage',
+            '@id' => $homeUrl . '#webpage',
+            'url' => $homeUrl,
+            'name' => $page_title . ' | ' . APP_NAME,
+            'description' => $page_desc,
+            'isPartOf' => ['@id' => $homeUrl . '#website'],
+            'inLanguage' => 'es-MX',
+        ],
+    ],
+];
+
 include __DIR__ . '/includes/header.php';
 ?>
 
@@ -40,7 +72,8 @@ include __DIR__ . '/includes/header.php';
         <div class="row align-items-center">
             <div class="col-md-7">
                 <h1 class="mb-1">
-                    <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo.png" alt="Melate el Chocolate" style="height: 120px;">
+                    <img class="logo-chocolate" src="<?= APP_URL ?>/public/img/logo.png" alt="Melate el Chocolate">
+                    <span class="visually-hidden">Melate el Chocolate: resultados, estadísticas y predicciones del Melate mexicano</span>
                 </h1>
                 <p class="mb-0 fs-5">Estadísticas, predicciones y resultados del Melate Mexicano</p>
             </div>

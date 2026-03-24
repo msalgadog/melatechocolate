@@ -85,8 +85,40 @@
         /* Tabla */
         .adm-table { color: var(--adm-text); }
         .adm-table thead th { color: var(--adm-muted); border-color: var(--adm-border); font-size: .78rem; text-transform: uppercase; background: transparent; }
-        .adm-table tbody td { border-color: var(--adm-border); vertical-align: middle; }
-        .adm-table tbody tr:hover td { background: rgba(245,166,35,.05); }
+        .adm-table tbody td { border-color: var(--adm-border); vertical-align: middle; transition: background-color .15s ease, color .15s ease; }
+        .adm-table thead th,
+        .adm-table tbody th,
+        .adm-table tbody td {
+            padding: .62rem .95rem;
+        }
+        .adm-table tbody tr:hover td {
+            background: rgba(245,166,35,.14);
+            color: #f6f8ff;
+        }
+        .adm-table tbody tr:hover .text-muted {
+            color: #d5dbea !important;
+        }
+        .adm-table tbody tr:hover .fw-semibold {
+            color: #ffffff;
+        }
+        .adm-table tbody tr:hover a:not(.btn) {
+            color: #ffe1a8 !important;
+        }
+        .adm-table tbody tr:hover .btn-admin-outline {
+            color: var(--adm-gold);
+            border-color: #f5a62399;
+        }
+        .adm-table tbody tr:hover .btn-admin-outline i {
+            color: var(--adm-gold);
+        }
+        .adm-table tbody tr:hover .btn-admin-outline:hover {
+            color: #ffffff;
+            border-color: var(--adm-gold);
+            background: rgba(245,166,35,.28);
+        }
+        .adm-table tbody tr:hover .btn-admin-outline:hover i {
+            color: #ffffff;
+        }
 
         /* Badges de juego */
         .badge-melate     { background: #3498db22; color: #5dade2; border: 1px solid #5dade244; }

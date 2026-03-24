@@ -19,6 +19,82 @@ $page_desc = $post ? $post['excerpt'] : 'Artículo del blog no encontrado.';
 $adsense_script = true;
 $katex_enabled  = true;
 
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+$appUrl = (string)(APP_URL ?? '');
+$siteBaseUrl = preg_match('#^https?://#i', $appUrl) === 1
+    ? rtrim($appUrl, '/')
+    : $scheme . '://' . $host . rtrim($appUrl, '/');
+
+$blogUrl = $siteBaseUrl . '/blog';
+$articlePath = $post ? '/blog/' . rawurlencode((string)$post['slug']) : '/blog';
+$page_canonical = $siteBaseUrl . $articlePath;
+$page_og_type = $post ? 'article' : 'website';
+$page_og_desc = $page_desc;
+$page_og_image = !empty($post['image_url'])
+    ? ((preg_match('#^https?://#i', (string)$post['image_url']) === 1)
+        ? (string)$post['image_url']
+        : $siteBaseUrl . (string)$post['image_url'])
+    : $siteBaseUrl . '/public/img/logo.png';
+$page_robots = $post ? 'index,follow,max-image-preview:large' : 'noindex,follow';
+
+if ($post) {
+    $publishedIso = !empty($post['published_at']) ? date(DATE_ATOM, strtotime((string)$post['published_at'])) : date(DATE_ATOM);
+    $seo_json_ld = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            [
+                '@type' => 'BlogPosting',
+                'headline' => (string)$post['title'],
+                'description' => (string)$post['excerpt'],
+                'image' => [$page_og_image],
+                'datePublished' => $publishedIso,
+                'dateModified' => $publishedIso,
+                'mainEntityOfPage' => [
+                    '@type' => 'WebPage',
+                    '@id' => $page_canonical,
+                ],
+                'author' => [
+                    '@type' => 'Organization',
+                    'name' => APP_NAME,
+                ],
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => APP_NAME,
+                    'logo' => [
+                        '@type' => 'ImageObject',
+                        'url' => $siteBaseUrl . '/public/img/logo.png',
+                    ],
+                ],
+                'inLanguage' => 'es-MX',
+            ],
+            [
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 1,
+                        'name' => 'Inicio',
+                        'item' => $siteBaseUrl . '/',
+                    ],
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 2,
+                        'name' => 'Blog',
+                        'item' => $blogUrl,
+                    ],
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 3,
+                        'name' => (string)$post['title'],
+                        'item' => $page_canonical,
+                    ],
+                ],
+            ],
+        ],
+    ];
+}
+
 include __DIR__ . '/includes/header.php';
 ?>
 
@@ -30,11 +106,12 @@ include __DIR__ . '/includes/header.php';
             <a href="<?= APP_URL ?>/blog" class="btn btn-success btn-sm">Volver al blog</a>
         </div>
     <?php else: ?>
-        <article class="stat-card">
+        <article class="stat-card blog-article">
             <p class="small text-muted mb-2">Publicado: <?= !empty($post['published_at']) ? date('d/m/Y', strtotime($post['published_at'])) : '' ?></p>
-            <h1 class="fw-bold mb-3" style="color:var(--ml-cafe-oscuro)"><?= htmlspecialchars($post['title']) ?></h1>
-            <p class="lead text-muted"><?= htmlspecialchars($post['excerpt']) ?></p>
+            <h1 class="fw-bold mb-3 blog-article-title"><?= htmlspecialchars($post['title']) ?></h1>
+            <p class="lead blog-article-excerpt"><?= htmlspecialchars($post['excerpt']) ?></p>
             <hr>
+            <div class="blog-article-content">
             <?php
             $rawContent = trim((string)$post['content']);
             $isHtmlContent = preg_match('/<\s*\/?[a-z][^>]*>/i', $rawContent) === 1;
@@ -55,6 +132,7 @@ include __DIR__ . '/includes/header.php';
                 endforeach;
             }
             ?>
+            </div>
         </article>
 
         <div class="text-end mt-3">

@@ -8,18 +8,61 @@ if (!defined('APP_NAME')) {
 }
 $currentPage = $pagina_actual ?? '';
 $titulo = isset($page_title) ? $page_title . ' | ' . APP_NAME : APP_NAME . ' — Estadísticas del Melate';
+$description = (string)($page_desc ?? 'Melate el Chocolate — Estadísticas, predicciones y resultados históricos del Melate, Revancha y Revanchita de la Lotería Nacional de México.');
+
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+$appUrl = (string)(APP_URL ?? '');
+
+if (preg_match('#^https?://#i', $appUrl) === 1) {
+    $siteBaseUrl = rtrim($appUrl, '/');
+} else {
+    $siteBaseUrl = $scheme . '://' . $host . rtrim($appUrl, '/');
+}
+
+$requestPath = (string)($_SERVER['REQUEST_URI'] ?? '/');
+$requestPath = (string)parse_url($requestPath, PHP_URL_PATH);
+if ($requestPath === '') {
+    $requestPath = '/';
+}
+
+$canonicalUrl = (string)($page_canonical ?? ($siteBaseUrl . $requestPath));
+$robots = (string)($page_robots ?? 'index,follow,max-image-preview:large');
+$ogType = (string)($page_og_type ?? 'website');
+$ogTitle = (string)($page_og_title ?? $titulo);
+$ogDescription = (string)($page_og_desc ?? $description);
+$ogImage = (string)($page_og_image ?? ($siteBaseUrl . '/public/img/logo.png'));
+$twitterCard = (string)($page_twitter_card ?? 'summary_large_image');
+$seoJsonLd = $seo_json_ld ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= htmlspecialchars($page_desc ?? 'Melate el Chocolate — Estadísticas, predicciones y resultados históricos del Melate, Revancha y Revanchita de la Lotería Nacional de México.') ?>">
+    <meta name="description" content="<?= htmlspecialchars($description) ?>">
     <meta name="keywords" content="melate resultados, estadísticas melate, predicción melate, números calientes melate, revancha revanchita, melate histórico">
-    <meta property="og:title"       content="<?= htmlspecialchars($titulo) ?>">
-    <meta property="og:description" content="Estadísticas y predicciones del Melate mexicano">
-    <meta property="og:type"        content="website">
+    <meta name="robots" content="<?= htmlspecialchars($robots) ?>">
+    <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl) ?>">
+
+    <meta property="og:title" content="<?= htmlspecialchars($ogTitle) ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($ogDescription) ?>">
+    <meta property="og:type" content="<?= htmlspecialchars($ogType) ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl) ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($ogImage) ?>">
+    <meta property="og:site_name" content="<?= htmlspecialchars(APP_NAME) ?>">
+    <meta property="og:locale" content="es_MX">
+
+    <meta name="twitter:card" content="<?= htmlspecialchars($twitterCard) ?>">
+    <meta name="twitter:title" content="<?= htmlspecialchars($ogTitle) ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($ogDescription) ?>">
+    <meta name="twitter:image" content="<?= htmlspecialchars($ogImage) ?>">
+
     <title><?= htmlspecialchars($titulo) ?></title>
+
+    <?php if (!empty($seoJsonLd)): ?>
+    <script type="application/ld+json"><?= json_encode($seoJsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?></script>
+    <?php endif; ?>
 
     <!-- Bootstrap 5 CDN -->
     <link rel="stylesheet"
