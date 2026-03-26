@@ -577,6 +577,15 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
 
 .blog-article {
     background: linear-gradient(135deg, var(--ml-cafe-oscuro), var(--ml-cafe-muy-oscuro));
+    overflow: hidden;
+}
+.blog-article-hero {
+    display: block;
+    width: calc(100% + 2.5rem);
+    max-height: 380px;
+    object-fit: cover;
+    margin: -1.25rem -1.25rem 1.25rem;
+    border-radius: var(--ml-radius) var(--ml-radius) 0 0;
 }
 .blog-article-title,
 .blog-article-excerpt {

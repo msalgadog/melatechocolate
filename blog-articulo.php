@@ -107,6 +107,11 @@ include __DIR__ . '/includes/header.php';
         </div>
     <?php else: ?>
         <article class="stat-card blog-article">
+            <?php if (!empty($post['image_url'])): ?>
+            <img src="<?= htmlspecialchars((string)$post['image_url']) ?>"
+                 alt="<?= htmlspecialchars((string)$post['title']) ?>"
+                 class="blog-article-hero">
+            <?php endif; ?>
             <p class="small text-muted mb-2">Publicado: <?= !empty($post['published_at']) ? date('d/m/Y', strtotime($post['published_at'])) : '' ?></p>
             <h1 class="fw-bold mb-3 blog-article-title"><?= htmlspecialchars($post['title']) ?></h1>
             <p class="lead blog-article-excerpt"><?= htmlspecialchars($post['excerpt']) ?></p>
