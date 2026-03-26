@@ -8,10 +8,67 @@
 // Animación de entrada de bolas
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+    initAgeGate();
     initTooltips();
     initCounters();
     initHeatmapSorter();
 });
+
+function initAgeGate() {
+    const cookieName = 'ml_age_verified';
+    if (getCookie(cookieName) === '1') return;
+
+    const swal = window.Swal;
+    if (!swal || typeof swal.fire !== 'function') {
+        const isAdult = window.confirm('¿Eres mayor de edad?');
+        if (isAdult) {
+            setCookie(cookieName, '1', 365);
+            return;
+        }
+
+        window.location.href = 'https://www.google.com';
+        return;
+    }
+
+    swal.fire({
+        title: 'Verificación de edad',
+        text: 'Este sitio es solo para mayores de 18 años. ¿Eres mayor de edad?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, soy mayor de edad',
+        cancelButtonText: 'No',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            setCookie(cookieName, '1', 365);
+            return;
+        }
+
+        window.location.href = 'https://www.google.com';
+    });
+}
+
+function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+}
+
+function getCookie(name) {
+    const nameEq = `${name}=`;
+    const cookies = document.cookie.split(';');
+
+    for (const cookie of cookies) {
+        const trimmed = cookie.trim();
+        if (trimmed.indexOf(nameEq) === 0) {
+            return decodeURIComponent(trimmed.substring(nameEq.length));
+        }
+    }
+
+    return null;
+}
 
 function initTooltips() {
     const els = document.querySelectorAll('[data-bs-toggle="tooltip"]');

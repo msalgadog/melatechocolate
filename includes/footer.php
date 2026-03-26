@@ -65,6 +65,9 @@
 <!-- Chart.js para gráficas -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- App JS -->
 <script src="<?= APP_URL ?>/public/js/app.js"></script>
 <?php if (!empty($katex_enabled)): ?>
