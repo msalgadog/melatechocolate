@@ -59,6 +59,8 @@ $seoJsonLd = $seo_json_ld ?? null;
     <meta name="twitter:image" content="<?= htmlspecialchars($ogImage) ?>">
 
     <title><?= htmlspecialchars($titulo) ?></title>
+    <link rel="icon" type="image/png" href="<?= APP_URL ?>/public/img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="<?= APP_URL ?>/public/img/favicon.png">
 
     <?php if (!empty($seoJsonLd)): ?>
     <script type="application/ld+json"><?= json_encode($seoJsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?></script>
