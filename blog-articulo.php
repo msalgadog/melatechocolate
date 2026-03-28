@@ -160,7 +160,13 @@ include __DIR__ . '/includes/header.php';
             </div>
 
             <!-- Estadísticas del artículo -->
-            <div class="blog-article-stats d-flex align-items-center gap-3 mt-4 pt-3 border-top border-secondary border-opacity-25 flex-wrap">
+            <?php
+            $shareUrl   = htmlspecialchars($page_canonical);
+            $shareTitle = htmlspecialchars(rawurlencode((string)$post['title']));
+            $fbShare    = 'https://www.facebook.com/sharer/sharer.php?u=' . rawurlencode($page_canonical);
+            $xShare     = 'https://x.com/intent/tweet?url=' . rawurlencode($page_canonical) . '&text=' . rawurlencode((string)$post['title']);
+            ?>
+            <div class="blog-article-stats d-flex align-items-center gap-2 mt-4 pt-3 flex-wrap">
                 <span class="blog-stat-badge">
                     <i class="bi bi-eye"></i> <?= number_format((int)$post['views']) ?> <?= (int)$post['views'] === 1 ? 'lectura' : 'lecturas' ?>
                 </span>
@@ -170,8 +176,21 @@ include __DIR__ . '/includes/header.php';
                         data-liked="<?= $isLiked ? '1' : '0' ?>">
                     <i class="bi <?= $isLiked ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' ?>"></i>
                     <span id="like-count"><?= number_format((int)$post['likes']) ?></span>
-                    <?= (int)$post['likes'] === 1 ? 'Me gusta' : 'Me gusta' ?>
+                    Me gusta
                 </button>
+                <span class="blog-share-sep">Compartir:</span>
+                <a href="<?= $fbShare ?>"
+                   target="_blank" rel="noopener noreferrer"
+                   class="blog-share-btn blog-share-fb"
+                   title="Compartir en Facebook">
+                    <i class="bi bi-facebook"></i> Facebook
+                </a>
+                <a href="<?= $xShare ?>"
+                   target="_blank" rel="noopener noreferrer"
+                   class="blog-share-btn blog-share-x"
+                   title="Compartir en X">
+                    <svg class="blog-share-x-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X
+                </a>
             </div>
         </article>
 

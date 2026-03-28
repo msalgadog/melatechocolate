@@ -656,15 +656,15 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
 
 /* ---- Blog: estadísticas en artículo ---- */
 .blog-article-stats {
-    border-top-color: rgba(255,255,255,.18) !important;
+    border-top: 1px solid rgba(255,255,255,.18);
 }
 .blog-stat-badge {
     display: inline-flex;
     align-items: center;
     gap: .35rem;
     font-size: .82rem;
-    color: rgba(255,255,255,.72);
-    background: rgba(255,255,255,.10);
+    color: rgba(255,255,255,.90);
+    background: rgba(255,255,255,.12);
     border-radius: 999px;
     padding: .3rem .75rem;
 }
@@ -675,7 +675,7 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
     gap: .4rem;
     font-size: .85rem;
     font-weight: 600;
-    color: rgba(255,255,255,.80);
+    color: rgba(255,255,255,.88);
     background: rgba(255,255,255,.10);
     border: 1px solid rgba(255,255,255,.22);
     border-radius: 999px;
@@ -699,6 +699,43 @@ footer .footer-title { color: var(--ml-dorado); font-weight: 700; }
     opacity: .6;
     cursor: default;
     transform: none;
+}
+
+/* Compartir */
+.blog-share-sep {
+    font-size: .78rem;
+    color: rgba(255,255,255,.50);
+    margin-left: .25rem;
+}
+.blog-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .82rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: .3rem .85rem;
+    text-decoration: none;
+    transition: opacity .2s, transform .15s;
+    line-height: 1.4;
+}
+.blog-share-btn:hover { opacity: .85; transform: scale(1.05); }
+.blog-share-fb {
+    background: #1877F2;
+    color: #fff;
+}
+.blog-share-fb:hover { color: #fff; }
+.blog-share-x {
+    background: #000;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.22);
+}
+.blog-share-x:hover { color: #fff; }
+.blog-share-x-icon {
+    width: 13px;
+    height: 13px;
+    fill: #fff;
+    flex-shrink: 0;
 }
 
 /* ---- Blog cards: meta stats (vistas/likes) ---- */
