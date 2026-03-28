@@ -30,7 +30,7 @@ $freqRevanchita = $repo->frecuenciaRevanchita();
 // Blog
 $contentRepo = new ContentRepository();
 $contentRepo->ensureSeedPosts();
-$blogPosts = $contentRepo->latestPosts(5);
+$blogPosts = $contentRepo->latestPosts(4);
 
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
@@ -213,7 +213,7 @@ include __DIR__ . '/includes/header.php';
         $bImgClass = $blogColors[$bi % 5];
         $bIcon     = $blogIcons[$bi % 5];
     ?>
-    <div class="col-12">
+    <div class="col-12 col-sm-6">
         <article class="blog-card">
             <a class="blog-card-thumb <?= $bImgClass ?>"
                href="<?= APP_URL ?>/blog/<?= urlencode($bpost['slug']) ?>">
@@ -228,6 +228,12 @@ include __DIR__ . '/includes/header.php';
                 <p class="blog-card-meta">
                     <i class="bi bi-calendar3 me-1"></i>
                     <?= !empty($bpost['published_at']) ? date('d M Y', strtotime($bpost['published_at'])) : '' ?>
+                    <?php if ((int)$bpost['views'] > 0): ?>
+                    <span class="ms-2"><i class="bi bi-eye"></i> <?= number_format((int)$bpost['views']) ?></span>
+                    <?php endif; ?>
+                    <?php if ((int)$bpost['likes'] > 0): ?>
+                    <span class="ms-1"><i class="bi bi-hand-thumbs-up"></i> <?= number_format((int)$bpost['likes']) ?></span>
+                    <?php endif; ?>
                 </p>
                 <h2 class="blog-card-title">
                     <a href="<?= APP_URL ?>/blog/<?= urlencode($bpost['slug']) ?>">

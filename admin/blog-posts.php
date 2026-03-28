@@ -74,9 +74,14 @@ require __DIR__ . '/layout_top.php';
         <h4 class="fw-bold mb-0">Entradas del blog</h4>
         <small class="text-muted">Administra el contenido publicado y los borradores.</small>
     </div>
-    <a href="<?= APP_URL ?>/admin/blog-post-edit.php" class="btn btn-admin-primary btn-sm">
-        <i class="bi bi-plus-lg me-1"></i>Nueva entrada
-    </a>
+    <div class="d-flex gap-2">
+        <a href="<?= APP_URL ?>/admin/blog-stats.php" class="btn btn-sm btn-admin-outline">
+            <i class="bi bi-bar-chart-line me-1"></i>Estad&iacute;sticas
+        </a>
+        <a href="<?= APP_URL ?>/admin/blog-post-edit.php" class="btn btn-admin-primary btn-sm">
+            <i class="bi bi-plus-lg me-1"></i>Nueva entrada
+        </a>
+    </div>
 </div>
 
 <?php if ($flash): ?>
@@ -93,10 +98,11 @@ require __DIR__ . '/layout_top.php';
         <table class="table adm-table table-sm align-middle mb-0">
             <thead>
                 <tr>
-                    <th>Título</th>
+                    <th>T&iacute;tulo</th>
                     <th>Estado</th>
                     <th>Publicado</th>
-                    <th>Slug</th>
+                    <th class="text-center"><i class="bi bi-eye me-1"></i>Vistas</th>
+                    <th class="text-center"><i class="bi bi-hand-thumbs-up me-1"></i>Likes</th>
                     <th class="text-end">Acciones</th>
                 </tr>
             </thead>
@@ -117,7 +123,16 @@ require __DIR__ . '/layout_top.php';
                     <td class="small text-muted">
                         <?= !empty($post['published_at']) ? date('d/m/Y H:i', strtotime((string)$post['published_at'])) : '—' ?>
                     </td>
-                    <td class="small text-muted"><?= htmlspecialchars($post['slug']) ?></td>
+                    <td class="text-center">
+                        <span class="badge" style="background:#1e2a1a;color:#58d68d;font-size:.8rem">
+                            <?= number_format((int)$post['views']) ?>
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge" style="background:#2a1e10;color:#f5a623;font-size:.8rem">
+                            <?= number_format((int)$post['likes']) ?>
+                        </span>
+                    </td>
                     <td class="text-end">
                         <a href="<?= APP_URL ?>/blog/<?= urlencode((string)$post['slug']) ?>"
                            class="btn btn-sm btn-admin-outline rounded-pill px-2 py-0"

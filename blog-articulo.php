@@ -1,4 +1,8 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/src/Database.php';
 require_once __DIR__ . '/src/ContentRepository.php';
@@ -11,6 +15,22 @@ $post = $slug !== '' ? $contentRepo->getPostBySlug($slug) : null;
 
 if (!$post) {
     http_response_code(404);
+}
+
+// ---- Contador de vistas (una vez por sesión por artículo) ----
+$sessionId = session_id();
+if ($post) {
+    $viewedKey = 'viewed_posts';
+    if (!isset($_SESSION[$viewedKey]) || !is_array($_SESSION[$viewedKey])) {
+        $_SESSION[$viewedKey] = [];
+    }
+    $postId = (int)$post['id'];
+    if (!in_array($postId, $_SESSION[$viewedKey], true)) {
+        $contentRepo->incrementViews($postId);
+        $_SESSION[$viewedKey][] = $postId;
+        $post['views'] = (int)$post['views'] + 1;
+    }
+    $isLiked = $contentRepo->isLikedBySession($postId, $sessionId);
 }
 
 $pagina_actual = 'blog';
@@ -138,6 +158,21 @@ include __DIR__ . '/includes/header.php';
             }
             ?>
             </div>
+
+            <!-- Estadísticas del artículo -->
+            <div class="blog-article-stats d-flex align-items-center gap-3 mt-4 pt-3 border-top border-secondary border-opacity-25 flex-wrap">
+                <span class="blog-stat-badge">
+                    <i class="bi bi-eye"></i> <?= number_format((int)$post['views']) ?> <?= (int)$post['views'] === 1 ? 'lectura' : 'lecturas' ?>
+                </span>
+                <button id="btn-like"
+                        class="blog-like-btn <?= $isLiked ? 'liked' : '' ?>"
+                        data-post-id="<?= (int)$post['id'] ?>"
+                        data-liked="<?= $isLiked ? '1' : '0' ?>">
+                    <i class="bi <?= $isLiked ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' ?>"></i>
+                    <span id="like-count"><?= number_format((int)$post['likes']) ?></span>
+                    <?= (int)$post['likes'] === 1 ? 'Me gusta' : 'Me gusta' ?>
+                </button>
+            </div>
         </article>
 
         <div class="text-end mt-3">
@@ -145,5 +180,38 @@ include __DIR__ . '/includes/header.php';
         </div>
     <?php endif; ?>
 </div>
+
+<?php if ($post): ?>
+<script>
+(function () {
+    var btn = document.getElementById('btn-like');
+    if (!btn) return;
+
+    btn.addEventListener('click', function () {
+        btn.disabled = true;
+        fetch('<?= rtrim(APP_URL, '/') ?>/api/blog-like.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ post_id: parseInt(btn.dataset.postId, 10) })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            var liked = data.liked;
+            var count = data.likes;
+            btn.dataset.liked = liked ? '1' : '0';
+            btn.classList.toggle('liked', liked);
+            var icon = btn.querySelector('i');
+            if (icon) {
+                icon.className = liked ? 'bi bi-hand-thumbs-up-fill' : 'bi bi-hand-thumbs-up';
+            }
+            var counter = document.getElementById('like-count');
+            if (counter) counter.textContent = count.toLocaleString('es-MX');
+        })
+        .catch(function () {})
+        .finally(function () { btn.disabled = false; });
+    });
+})();
+</script>
+<?php endif; ?>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>

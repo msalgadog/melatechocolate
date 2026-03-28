@@ -34,6 +34,26 @@ class ContentRepository
         if (empty($cols)) {
             $this->db->exec("ALTER TABLE blog_posts ADD COLUMN image_url VARCHAR(500) NOT NULL DEFAULT '' AFTER excerpt");
         }
+
+        // Migración: columnas views y likes
+        $cols = $this->db->query("SHOW COLUMNS FROM blog_posts LIKE 'views'")->fetchAll();
+        if (empty($cols)) {
+            $this->db->exec("ALTER TABLE blog_posts ADD COLUMN views INT UNSIGNED NOT NULL DEFAULT 0 AFTER updated_at");
+        }
+        $cols = $this->db->query("SHOW COLUMNS FROM blog_posts LIKE 'likes'")->fetchAll();
+        if (empty($cols)) {
+            $this->db->exec("ALTER TABLE blog_posts ADD COLUMN likes INT UNSIGNED NOT NULL DEFAULT 0 AFTER views");
+        }
+
+        // Tabla de likes por sesión
+        $this->db->exec("CREATE TABLE IF NOT EXISTS blog_post_likes (
+            id         BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            post_id    INT UNSIGNED NOT NULL,
+            session_id VARCHAR(128) NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_post_session (post_id, session_id),
+            INDEX idx_post (post_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     }
 
     private function canonicalPosts(): array
@@ -192,7 +212,8 @@ class ContentRepository
 
     public function allPostsForAdmin(): array
     {
-        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, status, published_at, created_at, updated_at
+        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, status, published_at, created_at, updated_at,
+                                         COALESCE(views, 0) AS views, COALESCE(likes, 0) AS likes
                                   FROM blog_posts
                                   ORDER BY COALESCE(published_at, created_at) DESC, id DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
@@ -264,7 +285,8 @@ class ContentRepository
     public function latestPosts(int $limit = 6): array
     {
         $limit = max(1, min(30, $limit));
-        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at
+        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at,
+                                         COALESCE(views, 0) AS views, COALESCE(likes, 0) AS likes
                                   FROM blog_posts
                                   WHERE status='published'
                                   ORDER BY updated_at DESC, published_at DESC, id DESC
@@ -274,7 +296,7 @@ class ContentRepository
 
     public function allPosts(): array
     {
-        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at
+        $stmt = $this->db->query("SELECT id, slug, title, excerpt, image_url, published_at, views, likes
                                   FROM blog_posts
                                   WHERE status='published'
                                   ORDER BY updated_at DESC, published_at DESC, id DESC");
@@ -283,12 +305,61 @@ class ContentRepository
 
     public function getPostBySlug(string $slug)
     {
-        $stmt = $this->db->prepare("SELECT id, slug, title, excerpt, image_url, content, published_at
+        $stmt = $this->db->prepare("SELECT id, slug, title, excerpt, image_url, content, published_at, views, likes
                                     FROM blog_posts
                                     WHERE status='published' AND slug=:slug
                                     LIMIT 1");
         $stmt->execute(['slug' => $slug]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ?: null;
+    }
+
+    public function incrementViews(int $id): void
+    {
+        $stmt = $this->db->prepare("UPDATE blog_posts SET views = views + 1 WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function isLikedBySession(int $postId, string $sessionId): bool
+    {
+        $stmt = $this->db->prepare(
+            "SELECT 1 FROM blog_post_likes WHERE post_id = :post_id AND session_id = :session_id LIMIT 1"
+        );
+        $stmt->execute(['post_id' => $postId, 'session_id' => $sessionId]);
+        return (bool)$stmt->fetchColumn();
+    }
+
+    public function addLike(int $postId, string $sessionId): int
+    {
+        try {
+            $stmt = $this->db->prepare(
+                "INSERT IGNORE INTO blog_post_likes (post_id, session_id) VALUES (:post_id, :session_id)"
+            );
+            $stmt->execute(['post_id' => $postId, 'session_id' => $sessionId]);
+            if ($stmt->rowCount() > 0) {
+                $this->db->prepare("UPDATE blog_posts SET likes = likes + 1 WHERE id = :id")
+                         ->execute(['id' => $postId]);
+            }
+        } catch (\Exception $e) {
+            // ignorar duplicado
+        }
+        $stmt = $this->db->prepare("SELECT likes FROM blog_posts WHERE id = :id");
+        $stmt->execute(['id' => $postId]);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function removeLike(int $postId, string $sessionId): int
+    {
+        $stmt = $this->db->prepare(
+            "DELETE FROM blog_post_likes WHERE post_id = :post_id AND session_id = :session_id"
+        );
+        $stmt->execute(['post_id' => $postId, 'session_id' => $sessionId]);
+        if ($stmt->rowCount() > 0) {
+            $this->db->prepare("UPDATE blog_posts SET likes = GREATEST(0, likes - 1) WHERE id = :id")
+                     ->execute(['id' => $postId]);
+        }
+        $stmt = $this->db->prepare("SELECT likes FROM blog_posts WHERE id = :id");
+        $stmt->execute(['id' => $postId]);
+        return (int)$stmt->fetchColumn();
     }
 }

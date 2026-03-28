@@ -47,6 +47,12 @@ include __DIR__ . '/includes/header.php';
                         <p class="blog-card-meta">
                             <i class="bi bi-calendar3 me-1"></i>
                             <?= !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : '' ?>
+                            <?php if ((int)$post['views'] > 0): ?>
+                            <span class="ms-2"><i class="bi bi-eye"></i> <?= number_format((int)$post['views']) ?></span>
+                            <?php endif; ?>
+                            <?php if ((int)$post['likes'] > 0): ?>
+                            <span class="ms-1"><i class="bi bi-hand-thumbs-up"></i> <?= number_format((int)$post['likes']) ?></span>
+                            <?php endif; ?>
                         </p>
                         <h2 class="blog-card-title">
                             <a href="<?= APP_URL ?>/blog/<?= urlencode($post['slug']) ?>">

@@ -85,6 +85,15 @@ $seoJsonLd = $seo_json_ld ?? null;
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4972818705870113"
          crossorigin="anonymous"></script>
     <?php endif; ?>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLFJ5EE3R5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LLFJ5EE3R5');
+    </script>
 </head>
 <body>
 

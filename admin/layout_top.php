@@ -204,6 +204,12 @@
                         <i class="bi bi-journal-richtext me-1"></i>Blog
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($active_page ?? '') === 'blog-stats' ? 'active' : '' ?>"
+                       href="<?= APP_URL ?>/admin/blog-stats.php">
+                        <i class="bi bi-bar-chart-line me-1"></i>Stats Blog
+                    </a>
+                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item d-flex align-items-center me-3">
