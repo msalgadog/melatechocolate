@@ -27,7 +27,7 @@ $maxLikes = (int)($topLikes[0]['likes'] ?? 1);
 if ($maxLikes === 0) $maxLikes = 1;
 
 $page_title = 'Estadísticas del Blog';
-$active_page = 'blog';
+$active_page = 'blog-stats';
 
 require __DIR__ . '/layout_top.php';
 ?>
