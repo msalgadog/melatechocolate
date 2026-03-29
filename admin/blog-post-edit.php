@@ -219,7 +219,7 @@ require __DIR__ . '/layout_top.php';
 <?php endif; ?>
 
 <div class="adm-card">
-    <form method="POST" enctype="multipart/form-data">
+    <form id="blog-post-form" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" value="save_post">
         <input type="hidden" name="id" value="<?= (int)$id ?>">
         <input type="hidden" name="current_image_url" value="<?= htmlspecialchars((string)$post['image_url']) ?>">
@@ -270,7 +270,7 @@ require __DIR__ . '/layout_top.php';
 
         <div class="mb-3">
             <label class="form-label">Contenido</label>
-            <textarea id="content_editor" name="content" rows="14" class="form-control" required><?= htmlspecialchars((string)$post['content']) ?></textarea>
+            <textarea id="content_editor" name="content" rows="14" class="form-control"><?= htmlspecialchars((string)$post['content']) ?></textarea>
         </div>
 
         <div class="d-flex gap-2">
@@ -295,6 +295,33 @@ tinymce.init({
     plugins: 'link lists table image code advlist autolink charmap fullscreen quickbars',
     toolbar: 'undo redo | blocks | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image table charmap | removeformat | code fullscreen'
 });
+
+var blogPostForm = document.getElementById('blog-post-form');
+var contentEditor = document.getElementById('content_editor');
+
+if (blogPostForm && contentEditor) {
+    blogPostForm.addEventListener('submit', function (event) {
+        if (typeof tinymce !== 'undefined') {
+            tinymce.triggerSave();
+        }
+
+        var rawHtml = (contentEditor.value || '');
+        var textOnly = rawHtml
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/&nbsp;/gi, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        if (textOnly === '') {
+            event.preventDefault();
+            alert('El contenido es obligatorio.');
+            var editor = (typeof tinymce !== 'undefined') ? tinymce.get('content_editor') : null;
+            if (editor) {
+                editor.focus();
+            }
+        }
+    });
+}
 </script>
 
 <?php require __DIR__ . '/layout_bottom.php'; ?>
