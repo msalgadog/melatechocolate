@@ -8,6 +8,8 @@ RewriteRule ^ - [L]
 
 # --- Rutas amigables (frontend) ---
 RewriteRule ^$ index.php [L,QSA]
+RewriteRule ^sitemap\.xml$ sitemap.php [L,QSA,NC]
+RewriteRule ^robots\.txt$ robots.txt [L,QSA,NC]
 RewriteRule ^blog/?$ blog.php [L,QSA]
 RewriteRule ^blog/([a-z0-9-]+)/?$ blog-articulo.php?slug=$1 [L,QSA,NC]
 RewriteRule ^estadisticas/juego/(melate|revancha|revanchita)/?$ estadisticas.php?juego=$1 [L,QSA,NC]
