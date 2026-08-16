@@ -41,7 +41,8 @@ $seoJsonLd = $seo_json_ld ?? null;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<?= htmlspecialchars($description) ?>">
-    <meta name="keywords" content="melate resultados, estadísticas melate, predicción melate, números calientes melate, revancha revanchita, melate histórico">
+    <?php $keywords = $page_keywords ?? 'melate resultados, estadísticas melate, laboratorio melate, predicción melate, números calientes melate, revancha revanchita, melate histórico'; ?>
+    <meta name="keywords" content="<?= htmlspecialchars($keywords) ?>">
     <meta name="robots" content="<?= htmlspecialchars($robots) ?>">
     <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl) ?>">
 
@@ -76,6 +77,9 @@ $seoJsonLd = $seo_json_ld ?? null;
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Estilos propios -->
     <link rel="stylesheet" href="<?= APP_URL ?>/public/css/style.css">
+
+    <!-- Highlight.js Tema de Código -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 
     <?php if (!empty($katex_enabled)): ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" crossorigin="anonymous">

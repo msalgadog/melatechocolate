@@ -136,26 +136,10 @@ include __DIR__ . '/includes/header.php';
             <h1 class="fw-bold mb-3 blog-article-title"><?= htmlspecialchars($post['title']) ?></h1>
             <p class="lead blog-article-excerpt"><?= htmlspecialchars($post['excerpt']) ?></p>
             <hr>
-            <div class="blog-article-content">
+            <div class="blog-article-content" id="blog-article-content">
             <?php
             $rawContent = trim((string)$post['content']);
-            $isHtmlContent = preg_match('/<\s*\/?[a-z][^>]*>/i', $rawContent) === 1;
-
-            if ($isHtmlContent) {
-                echo $rawContent;
-            } else {
-                foreach (preg_split('/\n\n+/', $rawContent) as $p):
-                    $p = trim($p);
-                    if ($p === '') continue;
-                    if (preg_match('/^##\s+(.+)/s', $p, $m)):
-                        echo '<h2 class="blog-h2">' . htmlspecialchars(trim($m[1])) . '</h2>';
-                    elseif (str_starts_with($p, '$$') && str_ends_with($p, '$$') && strlen($p) > 4):
-                        echo '<div class="blog-math">' . htmlspecialchars($p) . '</div>';
-                    else:
-                        echo '<p>' . nl2br(htmlspecialchars($p)) . '</p>';
-                    endif;
-                endforeach;
-            }
+            echo $rawContent;
             ?>
             </div>
 
@@ -202,7 +186,69 @@ include __DIR__ . '/includes/header.php';
 
 <?php if ($post): ?>
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
+    // ---- Renderizado de Markdown y Sintaxis de Código ----
+    var container = document.getElementById('blog-article-content');
+    if (container) {
+        var rawText = <?= json_encode($post['content'] ?? '') ?>;
+        var hasHtmlTags = /<\s*\/?[a-z][^>]*>/i.test(rawText);
+        var hasMarkdownCode = rawText.includes('```');
+
+        if ((!hasHtmlTags || hasMarkdownCode) && typeof marked !== 'undefined') {
+            try {
+                container.innerHTML = marked.parse(rawText);
+            } catch (e) {
+                console.error("Error al parsear Markdown:", e);
+            }
+        }
+
+        // Formateo visual de bloques de código pre > code
+        var codeBlocks = container.querySelectorAll('pre code');
+        codeBlocks.forEach(function (codeBlock) {
+            var pre = codeBlock.parentNode;
+            if (pre.parentNode && pre.parentNode.classList.contains('code-block-wrapper')) return;
+
+            var lang = 'CÓDIGO';
+            codeBlock.classList.forEach(function (cls) {
+                if (cls.startsWith('language-')) {
+                    lang = cls.replace('language-', '').toUpperCase();
+                } else if (cls.startsWith('lang-')) {
+                    lang = cls.replace('lang-', '').toUpperCase();
+                }
+            });
+
+            var wrapper = document.createElement('div');
+            wrapper.className = 'code-block-wrapper';
+
+            var header = document.createElement('div');
+            header.className = 'code-block-header';
+            header.innerHTML = '<span class="code-lang-tag"><i class="bi bi-code-slash me-1"></i>' + lang + '</span>' +
+                               '<button type="button" class="code-copy-btn"><i class="bi bi-clipboard me-1"></i>Copiar</button>';
+
+            var copyBtn = header.querySelector('.code-copy-btn');
+            copyBtn.addEventListener('click', function () {
+                var codeToCopy = codeBlock.textContent;
+                navigator.clipboard.writeText(codeToCopy).then(function () {
+                    copyBtn.innerHTML = '<i class="bi bi-check2 me-1"></i>¡Copiado!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(function () {
+                        copyBtn.innerHTML = '<i class="bi bi-clipboard me-1"></i>Copiar';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(function () {});
+            });
+
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(header);
+            wrapper.appendChild(pre);
+
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightElement(codeBlock);
+            }
+        });
+    }
+
+    // ---- Contador de likes ----
     var btn = document.getElementById('btn-like');
     if (!btn) return;
 
@@ -229,7 +275,7 @@ include __DIR__ . '/includes/header.php';
         .catch(function () {})
         .finally(function () { btn.disabled = false; });
     });
-})();
+});
 </script>
 <?php endif; ?>
 

@@ -200,6 +200,25 @@ include __DIR__ . '/includes/header.php';
 
     </div><!-- /row resultados -->
 
+    <!-- ---- Banner Laboratorio Estadístico ECharts ---- -->
+    <div class="stat-card mb-4 p-4 text-white" style="background: linear-gradient(135deg, var(--ml-cafe-oscuro), var(--ml-cafe-muy-oscuro)); border: 1px solid var(--ml-dorado); border-radius: var(--ml-radius);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <span class="badge bg-warning text-dark fw-bold mb-2">🚀 ¡Nuevo Laboratorio Interactivo!</span>
+                <h3 class="fw-bold text-warning mb-2"><i class="bi bi-cpu-fill me-1"></i> Laboratorio Estadístico con Apache ECharts</h3>
+                <p class="mb-2 text-white-75">
+                    Explora el histórico del Melate con 6 herramientas interactivas:
+                    <strong>Radiografía por Número (1-56)</strong>, <strong>Matriz 56×56 de Parejas</strong>, <strong>Grafo de Relaciones</strong>, <strong>Tendencias en Ventanas Móviles</strong> y <strong>ADN de Combinación</strong>.
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="<?= APP_URL ?>/estadisticas" class="btn btn-warning btn-lg fw-bold shadow">
+                    Abrir Laboratorio &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- ---- Blog de análisis ---- -->
     <h2 class="mb-3 fw-bold" style="color:var(--ml-verde-oscuro)">
         <i class="bi bi-journal-richtext"></i> Blog de análisis
